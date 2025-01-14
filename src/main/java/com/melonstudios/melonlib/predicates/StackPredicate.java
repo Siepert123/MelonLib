@@ -2,6 +2,7 @@ package com.melonstudios.melonlib.predicates;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 public abstract class StackPredicate implements Predicate<ItemStack> {
@@ -12,6 +13,10 @@ public abstract class StackPredicate implements Predicate<ItemStack> {
         return false;
     }
 
+    protected StackPredicate() {
+
+    }
+
     @Override
-    public abstract boolean test(ItemStack stack);
+    public abstract boolean test(@Nonnull ItemStack stack);
 }
