@@ -5,13 +5,16 @@ import com.melonstudios.melonlib.predicates.StatePredicateMetaBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
+import javax.annotation.Nonnull;
+
 public class MetaBlock {
     private final Block block;
     private final int metadata;
 
-    private MetaBlock(Block block, int meta) {
+    private MetaBlock(@Nonnull Block block, int meta) {
         this.block = block;
         this.metadata = meta;
+        if (block.getRegistryName() == null) throw new NullPointerException("Block registry name is null!");
     }
 
     public Block getBlock() {
@@ -27,7 +30,7 @@ public class MetaBlock {
 
     @Override
     public String toString() {
-        return String.format("%s/%s", block.getLocalizedName(), metadata);
+        return String.format("%s/%s", block.getRegistryName(), metadata);
     }
 
     @Override
@@ -44,6 +47,7 @@ public class MetaBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int hashCode() {
         return Block.getStateId(block.getStateFromMeta(metadata));
     }
