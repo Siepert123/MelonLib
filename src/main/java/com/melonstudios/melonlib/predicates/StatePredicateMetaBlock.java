@@ -14,6 +14,6 @@ public class StatePredicateMetaBlock extends StatePredicate {
 
     @Override
     public boolean test(@Nonnull IBlockState state) {
-        return MetaBlock.of(state).equals(metaBlock);
+        return MetaBlock.of(state).equals(this.metaBlock);
     }
 }
