@@ -15,9 +15,7 @@ public abstract class StackPredicate implements Predicate<ItemStack> {
         return false;
     }
 
-    protected StackPredicate() {
-
-    }
+    public StackPredicate() {}
 
     @Override
     public abstract boolean test(@Nonnull ItemStack stack);

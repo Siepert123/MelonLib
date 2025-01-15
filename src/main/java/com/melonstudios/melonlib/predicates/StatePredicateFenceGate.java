@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 public class StatePredicateFenceGate extends StatePredicate {
     public static final StatePredicate instance = new StatePredicateFenceGate();
 
+    private StatePredicateFenceGate() {}
+
     @Override
     public boolean test(@Nonnull IBlockState state) {
         return state.getBlock() instanceof BlockFenceGate;

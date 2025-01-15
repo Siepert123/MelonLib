@@ -15,7 +15,7 @@ public abstract class StatePredicate implements Predicate<IBlockState> {
         return false;
     }
 
-    protected StatePredicate() {}
+    public StatePredicate() {}
 
     @Override
     public abstract boolean test(@Nonnull IBlockState state);

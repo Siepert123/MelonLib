@@ -6,6 +6,9 @@ import javax.annotation.Nonnull;
 
 public class StackPredicateStackable extends StackPredicate {
     public static final StackPredicate instance = new StackPredicateStackable();
+
+    private StackPredicateStackable() {}
+
     @Override
     public boolean test(@Nonnull ItemStack stack) {
         return stack.isStackable();
