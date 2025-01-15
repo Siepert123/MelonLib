@@ -6,6 +6,9 @@ import net.minecraft.block.state.IBlockState;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * @since 1.0
+ */
 @SuppressWarnings("all")
 public abstract class StatePredicate implements Predicate<IBlockState> {
     public static boolean anyMatch(Predicate<IBlockState> predicate, Iterable<IBlockState> states) {

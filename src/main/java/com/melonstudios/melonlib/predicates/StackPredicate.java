@@ -6,6 +6,9 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * @since 1.0
+ */
 @SuppressWarnings("all")
 public abstract class StackPredicate implements Predicate<ItemStack> {
     public static boolean anyMatch(Predicate<ItemStack> predicate, Iterable<ItemStack> stacks) {

@@ -1,12 +1,17 @@
 package com.melonstudios.melonlib.render;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -22,25 +27,25 @@ public class RenderMelon {
     private RenderMelon() {}
 
     /**
-     * Invokes the {@link GL11#glScalef(float, float, float)} method, but uses the pixel measurement instead of block measurement.
+     * Invokes the {@link GL11#glScaled(double, double, double) GL11.glScaled()} method, but uses the pixel measurement instead of block measurement.
      * @param x X-scale in pixels
      * @param y Y-scale in pixels
      * @param z Z-scale in pixels
      * @since 1.0
      */
-    public static void glScalePixels(float x, float y, float z) {
-        GL11.glScalef(x / 16, y / 16, z / 16);
+    public static void glScalePixels(double x, double y, double z) {
+        GL11.glScaled(x / 16, y / 16, z / 16);
     }
 
     /**
-     * Invokes the {@link GL11#glTranslatef(float, float, float)} method, but uses pixel measurement instead of block measurement.
+     * Invokes the {@link GL11#glTranslated(double, double, double) GL11.glScaled()} method, but uses pixel measurement instead of block measurement.
      * @param x Translation along the X-axis in pixels
      * @param y Translation along the Y-axis in pixels
      * @param z Translation along the Z-axis in pixels
      * @since 1.0
      */
-    public static void glTranslatePixels(float x, float y, float z) {
-        GL11.glTranslatef(x / 16, y / 16, z / 16);
+    public static void glTranslatePixels(double x, double y, double z) {
+        GL11.glTranslated(x / 16, y / 16, z / 16);
     }
 
     /**
@@ -188,11 +193,77 @@ public class RenderMelon {
     }
 
     /**
+     * Renders a blockstate that is resized.
+     *
+     * @param state The blockstate to render
+     * @param brightness The brightness
+     * @param pos The position to render it at
+     * @param minX Min X corner
+     * @param minY Min Y corner
+     * @param minZ Min Z corner
+     * @param maxX Max X corner
+     * @param maxY Max Y corner
+     * @param maxZ Max Z corner
+     * @since 1.0
+     */
+    public static void renderResizedBlockstate(IBlockState state, float brightness, BlockPos pos, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        renderResizedBlockstateUnsafe(state, brightness, pos,
+                Math.min(minX, maxX), Math.min(minY, maxY),
+                Math.min(minZ, maxZ), Math.max(minX, maxX), Math.max(minY, maxY), Math.max(minZ, maxZ)
+        );
+    }
+
+    /**
+     * @see RenderMelon#renderResizedBlockstate(IBlockState, float, BlockPos, double, double, double, double, double, double) The recommended usage
+     */
+    public static void renderResizedBlockstateUnsafe(IBlockState state, float brightness, BlockPos pos, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        GL11.glPushMatrix();
+        glTranslatePixels(pos.getX() * 16, pos.getY() * 16, pos.getZ() * 16);
+        glTranslatePixels(minX, minY, minZ);
+        double dx = maxX - minX;
+        double dy = maxY - minY;
+        double dz = maxZ - minZ;
+        glScalePixels(dx, dy, dz);
+        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+        textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        IBakedModel model = Minecraft.getMinecraft()
+                        .getBlockRendererDispatcher().getModelForState(state);
+        GL11.glRotatef(-90, 0, 1, 0);
+        Minecraft.getMinecraft().getBlockRendererDispatcher()
+                        .getBlockModelRenderer().renderModelBrightness(model, state, brightness, true);
+        GL11.glPopMatrix();
+    }
+
+    /**
      * Checks whether the F3 screen is opened.
      * @return True if the F3 screen is opened
      * @since 1.0
      */
     public static boolean isF3ScreenEnabled() {
         return Minecraft.getMinecraft().gameSettings.showDebugInfo;
+    }
+
+    /**
+     * @return The default font renderer
+     * @since 1.0
+     */
+    public static FontRenderer getDefaultFontRenderer() {
+        return Minecraft.getMinecraft().fontRenderer;
+    }
+
+    /**
+     * @return The standard galactic alphabet font renderer
+     * @see RenderMelon#getDefaultFontRenderer() The default font renderer
+     * @since 1.0
+     */
+    public static FontRenderer getEnchantmentFontRenderer() {
+        return Minecraft.getMinecraft().standardGalacticFontRenderer;
+    }
+
+    /**
+     * @return The REAL Minecraft
+     */
+    public static Minecraft getTheRealMinecraftInstanceYesForRealIAmNotJokingGetItHereNowForOneHundredPercentOffOkayThisIsNotATroll() {
+        return Minecraft.getMinecraft();
     }
 }
