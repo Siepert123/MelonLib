@@ -110,6 +110,13 @@ public class BlockDictionary {
         return target.getBlock() == input.getBlock();
     }
 
+    public static boolean isBlockTagged(MetaBlock block, String name) {
+        return getOres(name, false).contains(block);
+    }
+    public static boolean isBlockTagged(IBlockState state, String name) {
+        return getOres(name, false).contains(MetaBlock.of(state));
+    }
+
     public static void registerOre(String name, Block ore) {
         registerOre(name, MetaBlock.of(ore, 0));
     }
