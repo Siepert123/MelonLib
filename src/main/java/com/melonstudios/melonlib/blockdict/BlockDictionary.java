@@ -4,8 +4,12 @@ import com.google.common.collect.Maps;
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.MetaBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,7 +43,24 @@ public class BlockDictionary {
         if (!initialized) {
             //tree & wood related stuff
             registerOre("logWood", Blocks.LOG, 12);
-            registerOre("logWood", Blocks.LOG2, 6);
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.X));
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.Y));
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.X));
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.Y));
+            registerOre("logWood", Blocks.LOG2.getDefaultState()
+                    .withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK)
+                    .withProperty(BlockNewLog.LOG_AXIS, BlockLog.EnumAxis.Z));
             registerOre("plankWood", Blocks.PLANKS, 6);
             registerOre("stairWood", Blocks.OAK_STAIRS, 8);
             registerOre("stairWood", Blocks.SPRUCE_STAIRS, 8);
