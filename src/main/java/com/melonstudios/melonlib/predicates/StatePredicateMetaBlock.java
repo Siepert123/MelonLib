@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
 
+//Filters based on the MetaBlock representing the blockstate
 public class StatePredicateMetaBlock extends StatePredicate {
     private final MetaBlock metaBlock;
 

@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+//Filters based on the item damage
 public class StackPredicateDamage extends StackPredicate {
     private final int damage;
 

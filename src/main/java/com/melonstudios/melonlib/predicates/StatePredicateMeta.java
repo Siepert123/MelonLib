@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
 
+//Filters based on the metadata of the block
 public class StatePredicateMeta extends StatePredicate {
     private static final StatePredicateMeta[] predicates = new StatePredicateMeta[16];
 

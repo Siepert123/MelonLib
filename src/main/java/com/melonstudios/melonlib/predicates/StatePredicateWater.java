@@ -5,8 +5,9 @@ import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
 
+//Filters based on if the block is either water or flowing water
 public class StatePredicateWater extends StatePredicate {
-    public static final StatePredicate instance = new StatePredicateWater();
+    public static final StatePredicate instance = new StatePredicateWater(); //only allow one instance to save memory
 
     private StatePredicateWater() {}
 

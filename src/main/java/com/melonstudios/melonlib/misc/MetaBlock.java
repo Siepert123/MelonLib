@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.misc;
 
+import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.predicates.StatePredicate;
 import com.melonstudios.melonlib.predicates.StatePredicateMetaBlock;
 import net.minecraft.block.Block;
@@ -8,6 +9,14 @@ import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
 
+/**
+ * A Block that has Metadata packaged with it.
+ * Used for predicates and the BlockDictionary.
+ * @since 1.0
+ * @see MetaItem
+ * @see StatePredicateMetaBlock
+ * @see BlockDictionary
+ */
 public class MetaBlock {
     public static final MetaBlock AIR = new MetaBlock(Blocks.AIR, 0);
 
@@ -61,6 +70,7 @@ public class MetaBlock {
     /**
      * Creates a new StatePredicate based on this MetaBlock.
      * @return A new StatePredicateMetaBlock with this as filter
+     * @since 1.0
      */
     public StatePredicate getPredicate() {
         return new StatePredicateMetaBlock(this);
@@ -69,19 +79,44 @@ public class MetaBlock {
     /**
      * Checks if this MetaBlock is air.
      * @return Whether this MetaBlock is air.
+     * @since 1.0
      */
     public boolean isAir() {
         return this == AIR || this.getBlock() == null || this.getBlock() == Blocks.AIR;
     }
 
+    /**
+     * Creates a new MetaBlock, or AIR if the block is air.
+     *
+     * @param block The block to represent
+     * @param meta The packaged metadata
+     * @return The new instance of the MetaBlock
+     * @since 1.0
+     */
     public static MetaBlock of(Block block, int meta) {
         if (block == Blocks.AIR) return AIR;
         return new MetaBlock(block, meta);
     }
+
+    /**
+     * Creates a new MetaBlock, or AIR if the state is based on air.
+     *
+     * @param state The blockstate to package into the MetaBlock
+     * @return The new instance of the MetaBlock
+     * @since 1.0
+     */
     public static MetaBlock of(IBlockState state) {
         if (state.getBlock() == Blocks.AIR) return AIR;
         return new MetaBlock(state.getBlock(), state.getBlock().getMetaFromState(state));
     }
+
+    /**
+     * Creates a new MetaBlock, or AIR if the state id is 0.
+     *
+     * @param stateId The state ID of the packaged blockstate
+     * @return The new instance of the MetaBlock
+     * @since 1.0
+     */
     public static MetaBlock of(int stateId) {
         if (stateId == 0) return AIR;
         return of(Block.getStateById(stateId));

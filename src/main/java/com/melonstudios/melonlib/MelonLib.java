@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
+//Main mod class. Not much to see here
 @Mod(modid = MelonLib.MODID, name = MelonLib.NAME, version = MelonLib.VERSION)
 public class MelonLib {
     public static final String MODID = "melonlib";

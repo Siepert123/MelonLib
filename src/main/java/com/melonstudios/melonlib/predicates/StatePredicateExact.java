@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
 
+//Filters based on whether the blockstate matches exactly
 public class StatePredicateExact extends StatePredicate {
     private final IBlockState state;
 

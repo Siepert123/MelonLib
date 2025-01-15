@@ -4,8 +4,9 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+//Filters based on whether the itemstack is stackable
 public class StackPredicateStackable extends StackPredicate {
-    public static final StackPredicate instance = new StackPredicateStackable();
+    public static final StackPredicate instance = new StackPredicateStackable(); //only allow one instance to save memory
 
     private StackPredicateStackable() {}
 

@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
 
+//Filters based on whether the block extends a certain class
 public class StatePredicateClass extends StatePredicate {
     private final Class<? extends Block> clazz;
     private final boolean exact;

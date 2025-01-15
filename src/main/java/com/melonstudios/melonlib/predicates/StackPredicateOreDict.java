@@ -6,6 +6,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 
+//Filters based on whether the passed blockstate is tagged with a certain oredict entry
 public class StackPredicateOreDict extends StackPredicate {
     private final String oreDict;
 

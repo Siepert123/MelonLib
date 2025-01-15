@@ -14,6 +14,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
+/**
+ * Event bus subscriber of MelonLib.
+ * There isn't really to see here tbh
+ */
 @Mod.EventBusSubscriber(modid = "melonlib")
 public class MelonLibEventHandler {
 

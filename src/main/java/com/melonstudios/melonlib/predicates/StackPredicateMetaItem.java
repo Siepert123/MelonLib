@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+//Filters based on the MetaItem representing the stack
 public class StackPredicateMetaItem extends StackPredicate {
     private final MetaItem metaItem;
 

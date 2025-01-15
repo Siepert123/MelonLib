@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+//Filters based on if the itemstack is EXACTLY the same as the filter
 public class StackPredicateExact extends StackPredicate {
     private final ItemStack stack;
 

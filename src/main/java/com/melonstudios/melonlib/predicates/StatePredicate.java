@@ -7,7 +7,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
+ * A predicate for IBlockStates.
+ * Can be passed into a function requiring a {@code Predicate<IBlockState>}.
+ *
  * @since 1.0
+ * @see StackPredicate
+ * @see StatePredicateMetaBlock
+ * @see StatePredicateExact
  */
 @SuppressWarnings("all")
 public abstract class StatePredicate implements Predicate<IBlockState> {

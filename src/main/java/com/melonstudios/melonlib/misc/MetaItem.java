@@ -10,6 +10,12 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+/**
+ * An Item that has some Metadata packaged with it. Used for predicates.
+ * @since 1.0
+ * @see MetaBlock
+ * @see StackPredicateMetaItem
+ */
 public class MetaItem {
     public static final MetaItem AIR = new MetaItem(Items.AIR, 0);
 
@@ -63,6 +69,7 @@ public class MetaItem {
     /**
      * Creates a new StackPredicate based on this MetaItem.
      * @return A new StackPredicateMetaItem with this as filter
+     * @since 1.0
      */
     public StackPredicate getPredicate() {
         return new StackPredicateMetaItem(this);
@@ -71,19 +78,44 @@ public class MetaItem {
     /**
      * Checks if this MetaItem is air.
      * @return Whether this MetaItem is air.
+     * @since 1.0
      */
     public boolean isAir() {
         return this == AIR || this.getItem() == null || this.getItem() == Items.AIR;
     }
 
+    /**
+     * Creates a new MetaItem, or AIR if the item is air.
+     * @param item The item to represent
+     * @param meta The packaged metadata
+     * @return The new instance of the MetaItem
+     * @since 1.0
+     */
     public static MetaItem of(Item item, int meta) {
         if (item == Items.AIR) return AIR;
         return new MetaItem(item, meta);
     }
+
+    /**
+     * Creates a new MetaItem, or AIR if the stack is empty.
+     *
+     * @param stack The itemstack to package into the MetaItem
+     * @return The new instance of the MetaItem
+     * @since 1.0
+     */
     public static MetaItem of(ItemStack stack) {
         if (stack.isEmpty()) return AIR;
         return new MetaItem(stack.getItem(), stack.getMetadata());
     }
+
+    /**
+     * Creates a new MetaItem, or AIR if the block has no represented item.
+     *
+     * @param block The block form of the item to represent
+     * @param meta The packaged metadata
+     * @return The new instance of the MetaItem
+     * @since 1.0
+     */
     public static MetaItem of(Block block, int meta) {
         if (block == Blocks.AIR) return AIR;
         return of(Item.getItemFromBlock(block), meta);

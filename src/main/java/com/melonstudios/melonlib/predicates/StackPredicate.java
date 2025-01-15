@@ -7,7 +7,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
+ * A predicate for ItemStacks.
+ * Can be passed into a function requiring a {@code Predicate<ItemStack>}.
+ *
  * @since 1.0
+ * @see StatePredicate
+ * @see StackPredicateMetaItem
+ * @see StackPredicateExact
  */
 @SuppressWarnings("all")
 public abstract class StackPredicate implements Predicate<ItemStack> {

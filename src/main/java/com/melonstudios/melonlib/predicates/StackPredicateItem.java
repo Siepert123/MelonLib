@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+//Filters based on the item itself
 public class StackPredicateItem extends StackPredicate {
     private final Item item;
 

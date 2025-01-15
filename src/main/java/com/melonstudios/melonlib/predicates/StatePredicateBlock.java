@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
 
+//Filters based on block
 public class StatePredicateBlock extends StatePredicate {
     private final Block block;
 
