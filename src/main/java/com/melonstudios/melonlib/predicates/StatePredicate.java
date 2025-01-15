@@ -1,10 +1,12 @@
 package com.melonstudios.melonlib.predicates;
 
+import com.google.common.base.Predicate;
 import net.minecraft.block.state.IBlockState;
 
 import javax.annotation.Nonnull;
-import java.util.function.Predicate;
+import javax.annotation.Nullable;
 
+@SuppressWarnings("all")
 public abstract class StatePredicate implements Predicate<IBlockState> {
     public static boolean anyMatch(Predicate<IBlockState> predicate, Iterable<IBlockState> states) {
         for (IBlockState state : states) {
@@ -17,4 +19,9 @@ public abstract class StatePredicate implements Predicate<IBlockState> {
 
     @Override
     public abstract boolean test(@Nonnull IBlockState state);
+
+    @Override
+    public final boolean apply(@Nullable IBlockState input) {
+        return input != null && test(input);
+    }
 }
