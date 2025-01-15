@@ -380,9 +380,7 @@ public class BlockDictionary {
         if (registry == null) {
             ModContainer modContainer = Loader.instance().activeModContainer();
             String modContainerName = modContainer == null ? null : modContainer.getName();
-            MelonLib.logger.warn("A broken block dictionary registration with name {} has occurred. It adds a meta block (type: {}) which is currently unknown to the game registry. This dictionary item can only support a single value when"
-                    + " registered with ores like this, and NO I am not going to turn this spam off. Just register your block dictionary entries after the GameRegistry.\n"
-                    + "TO USERS: YES this is a BUG in the mod " + modContainerName + " report it to them!", name, ore.getBlock().getClass());
+            MelonLib.logger.warn("A broken block dictionary registration with name {} has occurred. It adds a meta block (type: {}) which is currently unknown to the game registry. This dictionary item can only support a single value when registered with ores like this, and NO I am not going to turn this spam off. Just register your block dictionary entries after the GameRegistry.\nTO USERS: YES this is a BUG in the mod {} report it to them!", name, ore.getBlock().getClass(), modContainerName);
             hash = -1;
         } else {
             hash = ore.getStateId();
@@ -422,7 +420,7 @@ public class BlockDictionary {
                 }
                 List<Integer> ids = blockToId.computeIfAbsent(hash, k -> new ArrayList<>());
                 ids.add(id);
-                MelonLib.logger.debug(id + " " + getOreName(id) + Integer.toHexString(hash) + " " + ore);
+                MelonLib.logger.debug("{} {}{} {}", id, getOreName(id), Integer.toHexString(hash), ore);
             }
         }
     }
