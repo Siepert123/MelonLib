@@ -5,18 +5,20 @@ import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.MetaBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import scala.Int;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+/**
+ * The BlockDictionary is a useful tool for tagging blocks in a way that is compatible with other mods (as long as they have MelonLib installed).
+ */
 public class BlockDictionary {
     private static boolean initialized = false;
     private static final List<String> idToName = new ArrayList<>();
@@ -24,16 +26,146 @@ public class BlockDictionary {
     private static final List<NonNullList<MetaBlock>> idToBlock = new ArrayList<>();
     private static final List<NonNullList<MetaBlock>> idToBlockUn = new ArrayList<>();
     private static final Map<Integer, List<Integer>> blockToId = Maps.newHashMapWithExpectedSize((int) (128 * 0.75f));
-    private static final NonNullList<MetaBlock> EMPTY_LIST = NonNullList.create();
+    private static final NonNullList<MetaBlock> EMPTY_LIST = NonNullList.create(); //This is an empty list
 
     static {
         initVanillaEntries();
     }
 
+    /**
+     * Registers all vanilla entries.
+     */
     private static void initVanillaEntries() {
+        if (!initialized) {
+            //tree & wood related stuff
+            registerOre("logWood", Blocks.LOG, 12);
+            registerOre("logWood", Blocks.LOG2, 6);
+            registerOre("plankWood", Blocks.PLANKS, 6);
+            registerOre("stairWood", Blocks.OAK_STAIRS, 8);
+            registerOre("stairWood", Blocks.SPRUCE_STAIRS, 8);
+            registerOre("stairWood", Blocks.BIRCH_STAIRS, 8);
+            registerOre("stairWood", Blocks.JUNGLE_STAIRS, 8);
+            registerOre("stairWood", Blocks.ACACIA_STAIRS, 8);
+            registerOre("stairWood", Blocks.DARK_OAK_STAIRS, 8);
+            registerOre("fenceWood", Blocks.OAK_FENCE, false);
+            registerOre("fenceWood", Blocks.SPRUCE_FENCE, false);
+            registerOre("fenceWood", Blocks.BIRCH_FENCE, false);
+            registerOre("fenceWood", Blocks.JUNGLE_FENCE, false);
+            registerOre("fenceWood", Blocks.DARK_OAK_FENCE, false);
+            registerOre("fenceWood", Blocks.ACACIA_FENCE, false);
+            registerOre("fenceGateWood", Blocks.OAK_FENCE_GATE, 8);
+            registerOre("fenceGateWood", Blocks.SPRUCE_FENCE_GATE, 8);
+            registerOre("fenceGateWood", Blocks.BIRCH_FENCE_GATE, 8);
+            registerOre("fenceGateWood", Blocks.JUNGLE_FENCE_GATE, 8);
+            registerOre("fenceGateWood", Blocks.DARK_OAK_FENCE_GATE, 8);
+            registerOre("fenceGateWood", Blocks.ACACIA_FENCE_GATE, 8);
+            registerOre("treeSapling", Blocks.SAPLING, 6);
+            registerOre("vine", Blocks.VINE, true);
 
+            //ores
+            registerOre("oreCoal", Blocks.COAL_ORE, false);
+            registerOre("oreIron", Blocks.IRON_ORE, false);
+            registerOre("oreRedstone", Blocks.REDSTONE_ORE, false);
+            registerOre("oreRedstone", Blocks.LIT_REDSTONE_ORE, false);
+            registerOre("oreGold", Blocks.GOLD_ORE, false);
+            registerOre("oreDiamond", Blocks.DIAMOND_ORE, false);
+            registerOre("oreEmerald", Blocks.EMERALD_ORE, false);
+            registerOre("oreQuartz", Blocks.QUARTZ_ORE, false);
+
+            //storage blocks
+            registerOre("blockGold", Blocks.GOLD_BLOCK, false);
+            registerOre("blockIron", Blocks.IRON_BLOCK, false);
+            registerOre("blockLapis", Blocks.LAPIS_BLOCK, false);
+            registerOre("blockDiamond", Blocks.DIAMOND_BLOCK, false);
+            registerOre("blockRedstone", Blocks.REDSTONE_BLOCK, false);
+            registerOre("blockEmerald", Blocks.EMERALD_BLOCK, false);
+            registerOre("blockQuartz", Blocks.QUARTZ_BLOCK, false);
+            registerOre("blockCoal", Blocks.COAL_BLOCK, false);
+
+            // blocks
+            registerOre("dirt", Blocks.DIRT, false);
+            registerOre("grass", Blocks.GRASS, false);
+            registerOre("stone", Blocks.STONE, false);
+            registerOre("cobblestone", Blocks.COBBLESTONE, false);
+            registerOre("gravel", Blocks.GRAVEL, false);
+            registerOre("sand", Blocks.SAND, 2);
+            registerOre("sandstone", Blocks.SANDSTONE, 3);
+            registerOre("sandstone", Blocks.RED_SANDSTONE, 3);
+            registerOre("netherrack", Blocks.NETHERRACK, false);
+            registerOre("obsidian", Blocks.OBSIDIAN, false);
+            registerOre("glowstone", Blocks.GLOWSTONE, false);
+            registerOre("endstone", Blocks.END_STONE, false);
+            registerOre("torch",  Blocks.TORCH, 5);
+            registerOre("workbench", Blocks.CRAFTING_TABLE, false);
+            registerOre("blockSlime", Blocks.SLIME_BLOCK, false);
+            registerOre("blockPrismarine", MetaBlock.of(Blocks.PRISMARINE, 0));
+            registerOre("blockPrismarineBrick", MetaBlock.of(Blocks.PRISMARINE, 1));
+            registerOre("blockPrismarineDark", MetaBlock.of(Blocks.PRISMARINE, 2));
+            registerOre("stoneGranite", MetaBlock.of(Blocks.STONE, 1));
+            registerOre("stoneGranitePolished", MetaBlock.of(Blocks.STONE, 2));
+            registerOre("stoneDiorite", MetaBlock.of(Blocks.STONE, 3));
+            registerOre("stoneDioritePolished", MetaBlock.of(Blocks.STONE, 4));
+            registerOre("stoneAndesite", MetaBlock.of(Blocks.STONE, 5));
+            registerOre("stoneAndesitePolished", MetaBlock.of(Blocks.STONE, 6));
+            registerOre("blockGlassColorless", Blocks.GLASS, false);
+            registerOre("blockGlass", Blocks.GLASS, false);
+            registerOre("blockGlass", Blocks.STAINED_GLASS, true);
+            //blockGlass{Color} is added below with dyes
+            registerOre("paneGlassColorless", Blocks.GLASS_PANE, false);
+            registerOre("paneGlass", Blocks.GLASS_PANE, false);
+            registerOre("paneGlass", Blocks.STAINED_GLASS_PANE, true);
+            //paneGlass{Color} is added below with dyes
+            registerOre("wool", Blocks.WOOL, true);
+            //wool{Color} is added below with dyes
+
+            // chests
+            registerOre("chest", Blocks.CHEST, false);
+            registerOre("chest", Blocks.ENDER_CHEST, false);
+            registerOre("chest", Blocks.TRAPPED_CHEST, false);
+            registerOre("chestWood", Blocks.CHEST, false);
+            registerOre("chestEnder", Blocks.ENDER_CHEST, false);
+            registerOre("chestTrapped", Blocks.TRAPPED_CHEST, false);
+
+            String[] dyes = {
+                    "Black",
+                    "Red",
+                    "Green",
+                    "Brown",
+                    "Blue",
+                    "Purple",
+                    "Cyan",
+                    "LightGray",
+                    "Gray",
+                    "Pink",
+                    "Lime",
+                    "Yellow",
+                    "LightBlue",
+                    "Magenta",
+                    "Orange",
+                    "White"
+            };
+
+            for (int i = 0; i < 16; i++) {
+                MetaBlock wool = MetaBlock.of(Blocks.WOOL, i);
+                MetaBlock glass = MetaBlock.of(Blocks.STAINED_GLASS, i);
+                MetaBlock pane = MetaBlock.of(Blocks.STAINED_GLASS_PANE, i);
+
+                registerOre("wool" + dyes[i], wool);
+                registerOre("blockGlass" + dyes[i], glass);
+                registerOre("paneGlass" + dyes[i], pane);
+            }
+
+            initialized = true;
+        }
     }
 
+    /**
+     * Gets the integer ID for the specified ore name.
+     * If the name does not have an ID it assigns it a new one.
+     *
+     * @param name The unique name for this ore 'oreIron', 'blockGold', etc..
+     * @return A number representing the ID for this ore type
+     */
     public static int getOreID(String name) {
         Integer id = nameToId.get(name);
         if (id == null) {
@@ -47,10 +179,23 @@ public class BlockDictionary {
         return id;
     }
 
+    /**
+     * Reverse of getOreID, will not create new entries.
+     *
+     * @param id The ID to translate to a string
+     * @return The String name, or "Unknown" if not found.
+     */
     public static String getOreName(@Nonnegative int id) {
         return (id < idToName.size()) ? idToName.get(id) : "Unknown";
     }
 
+    /**
+     * Gets all the integer ID for the ores that the specified meta block is registered to.
+     * If the meta block is not linked to any ore, this will return an empty array and no new entry will be created.
+     *
+     * @param block The meta block of the ore.
+     * @return An array of ids that this ore is registered as.
+     */
     public static int[] getOreIDs(@Nonnull MetaBlock block) {
         Set<Integer> set = new HashSet<>();
 
@@ -65,9 +210,32 @@ public class BlockDictionary {
         return ret;
     }
 
+    /**
+     * Retrieves the NonNullList of blocks that are registered to this ore type.
+     * Creates the list as empty if it did not exist.
+     * <p>
+     * The returned List is unmodifiable, but will be updated if a new ore
+     * is registered using registerOre
+     *
+     * @param name The ore name, directly calls getOreID
+     * @return An NonNullList containing MetaBlocks registered for this ore
+     */
     public static NonNullList<MetaBlock> getOres(String name) {
         return getOres(getOreID(name));
     }
+
+    /**
+     * Retrieves the List of items that are registered to this ore type at this instant.
+     * If the flag is TRUE, then it will create the list as empty if it did not exist.
+     * <p>
+     * This option should be used by modders who are doing blanket scans in postInit.
+     * It greatly reduces clutter in the BlockDictionary is the responsible and proper
+     * way to use the dictionary in a large number of cases.
+     *
+     * @param name The ore name, directly calls getOreID if the flag is TRUE
+     * @param alwaysCreateEntry Flag - should a new entry be created if empty
+     * @return An NonNullList containing MetaBlocks registered for this ore
+     */
     public static NonNullList<MetaBlock> getOres(String name, boolean alwaysCreateEntry) {
         if (alwaysCreateEntry) {
             return getOres(getOreID(name));
@@ -75,14 +243,36 @@ public class BlockDictionary {
         return nameToId.get(name) != null ? getOres(getOreID(name)) : EMPTY_LIST;
     }
 
+    /**
+     * Returns whether an oreName exists in the dictionary.
+     * This function can be used to safely query the Block Dictionary without
+     * adding needless clutter to the underlying map structure.
+     * <p>
+     * Please use this when possible and appropriate.
+     *
+     * @param name The ore name
+     * @return Whether that name is in the Block Dictionary.
+     */
     public static boolean doesOreNameExist(String name) {
         return nameToId.get(name) != null;
     }
 
+    /**
+     * Retrieves a list of all unique ore names that are already registered.
+     *
+     * @return All unique ore names that are currently registered.
+     */
     public static String[] getOreNames() {
         return idToName.toArray(new String[0]);
     }
 
+    /**
+     * Retrieves the List of blocks that are registered to this ore type.
+     * Creates the list as empty if it did not exist.
+     *
+     * @param id The ore ID, see getOreID
+     * @return A List containing MetaBlocks registered for this ore
+     */
     private static NonNullList<MetaBlock> getOres(@Nonnegative int id) {
         return idToBlockUn.size() > id ? idToBlockUn.get(id) : EMPTY_LIST;
     }
@@ -110,23 +300,76 @@ public class BlockDictionary {
         return target.getBlock() == input.getBlock();
     }
 
+    /**
+     * Checks if the supplied MetaBlock is tagged with the supplied ore name.
+     * @param block The MetaBlock to test
+     * @param name The ore name to check for
+     * @return Whether the MetaBlock is tagged with the ore name
+     */
     public static boolean isBlockTagged(MetaBlock block, String name) {
         return getOres(name, false).contains(block);
     }
+    /**
+     * Checks if the supplied blockstate is tagged with the supplied ore name.
+     * @param state The blockstate to test (automatically converted to MetaBlock)
+     * @param name The ore name to check for
+     * @return Whether the blockstate is tagged with the ore name
+     */
     public static boolean isBlockTagged(IBlockState state, String name) {
         return getOres(name, false).contains(MetaBlock.of(state));
     }
 
-    public static void registerOre(String name, Block ore) {
-        registerOre(name, MetaBlock.of(ore, 0));
+    /**
+     * Registers an ore block into the dictionary.
+     * @param name The name of the ore
+     * @param ore The ore's Block
+     * @param allMetadataValues Whether to use all 16 meta values or only 0
+     */
+    public static void registerOre(String name, Block ore, boolean allMetadataValues) {
+        if (allMetadataValues) {
+            for (int i = 0; i < 16; i++) {
+                registerOre(name, MetaBlock.of(ore, i));
+            }
+        } else registerOre(name, MetaBlock.of(ore, 0));
     }
+
+    /**
+     * Registers an ore block into the dictionary.
+     * @param name The name of the ore
+     * @param ore The ore's Block
+     * @param limitMeta How many metadata values to use
+     */
+    public static void registerOre(String name, Block ore, int limitMeta) {
+        for (int i = 0; i < limitMeta; i++) {
+            registerOre(name, MetaBlock.of(ore, i));
+        }
+    }
+
+    /**
+     * Registers an ore block into the dictionary.
+     * @param name The name of the ore
+     * @param ore The ore's blockstate (automatically converted to MetaBlock)
+     */
     public static void registerOre(String name, IBlockState ore) {
         registerOre(name, MetaBlock.of(ore));
     }
+
+    /**
+     * Registers an ore block into the dictionary.
+     * @param name The name of the ore
+     * @param ore The ore's MetaBlock
+     */
     public static void registerOre(String name, MetaBlock ore) {
         registerOreImpl(name, ore);
     }
 
+    /**
+     * Registers an ore block into the dictionary.
+     * Raises the registerOre function in all registered handlers.
+     *
+     * @param name The name of the ore
+     * @param ore The ore's MetaBlock
+     */
     private static void registerOreImpl(String name, MetaBlock ore) {
         if ("Unknown".equals(name)) return;
 
@@ -157,6 +400,10 @@ public class BlockDictionary {
         MinecraftForge.EVENT_BUS.post(new BlockDictRegisterEvent(ore, name));
     }
 
+    /**
+     * Rebakes the BlockDictionary blockToId map.
+     * Called when the IDs change, so that the dictionary does not get all messed up.
+     */
     public static void rebakeMap() {
         MelonLib.logger.debug("Baking BlockDictionary:");
         blockToId.clear();

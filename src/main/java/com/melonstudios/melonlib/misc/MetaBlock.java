@@ -4,10 +4,13 @@ import com.melonstudios.melonlib.predicates.StatePredicate;
 import com.melonstudios.melonlib.predicates.StatePredicateMetaBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
 
 public class MetaBlock {
+    public static final MetaBlock AIR = new MetaBlock(Blocks.AIR, 0);
+
     private final Block block;
     private final int metadata;
 
@@ -24,6 +27,9 @@ public class MetaBlock {
         return metadata;
     }
 
+    /**
+     * @return The state ID of the represented blockstate.
+     */
     public int getStateId() {
         return hashCode();
     }
@@ -52,17 +58,32 @@ public class MetaBlock {
         return Block.getStateId(block.getStateFromMeta(metadata));
     }
 
+    /**
+     * Creates a new StatePredicate based on this MetaBlock.
+     * @return A new StatePredicateMetaBlock with this as filter
+     */
     public StatePredicate getPredicate() {
         return new StatePredicateMetaBlock(this);
     }
 
+    /**
+     * Checks if this MetaBlock is air.
+     * @return Whether this MetaBlock is air.
+     */
+    public boolean isAir() {
+        return this == AIR || this.getBlock() == null || this.getBlock() == Blocks.AIR;
+    }
+
     public static MetaBlock of(Block block, int meta) {
+        if (block == Blocks.AIR) return AIR;
         return new MetaBlock(block, meta);
     }
     public static MetaBlock of(IBlockState state) {
+        if (state.getBlock() == Blocks.AIR) return AIR;
         return new MetaBlock(state.getBlock(), state.getBlock().getMetaFromState(state));
     }
     public static MetaBlock of(int stateId) {
+        if (stateId == 0) return AIR;
         return of(Block.getStateById(stateId));
     }
 }
