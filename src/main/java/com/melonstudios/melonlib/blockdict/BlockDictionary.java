@@ -86,6 +86,7 @@ public class BlockDictionary {
             //ores
             registerOre("oreCoal", Blocks.COAL_ORE, false);
             registerOre("oreIron", Blocks.IRON_ORE, false);
+            registerOre("oreLapis", Blocks.LAPIS_ORE, false);
             registerOre("oreRedstone", Blocks.REDSTONE_ORE, false);
             registerOre("oreRedstone", Blocks.LIT_REDSTONE_ORE, false);
             registerOre("oreGold", Blocks.GOLD_ORE, false);
@@ -167,14 +168,22 @@ public class BlockDictionary {
             };
 
             for (int i = 0; i < 16; i++) {
-                MetaBlock wool = MetaBlock.of(Blocks.WOOL, i);
-                MetaBlock glass = MetaBlock.of(Blocks.STAINED_GLASS, i);
-                MetaBlock pane = MetaBlock.of(Blocks.STAINED_GLASS_PANE, i);
+                MetaBlock wool = MetaBlock.of(Blocks.WOOL, 15 - i);
+                MetaBlock glass = MetaBlock.of(Blocks.STAINED_GLASS, 15 - i);
+                MetaBlock pane = MetaBlock.of(Blocks.STAINED_GLASS_PANE, 15 - i);
+                MetaBlock terracotta = MetaBlock.of(Blocks.STAINED_HARDENED_CLAY, 15 - i);
 
                 registerOre("wool" + dyes[i], wool);
                 registerOre("blockGlass" + dyes[i], glass);
                 registerOre("paneGlass" + dyes[i], pane);
+                registerOre("terracotta" + dyes[i], terracotta);
             }
+
+            //Miscellaneous
+            registerOre("carpetWool", Blocks.CARPET, true);
+            registerOre("terracotta", Blocks.HARDENED_CLAY, false);
+            registerOre("terracotta", Blocks.STAINED_HARDENED_CLAY, true);
+            registerOre("terracottaColorless", Blocks.HARDENED_CLAY, false);
 
             initialized = true;
         }
