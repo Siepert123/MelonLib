@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["Siepert"],
   "credits": "",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }
