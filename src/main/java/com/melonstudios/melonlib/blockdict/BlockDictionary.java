@@ -22,6 +22,7 @@ import java.util.*;
 
 /**
  * The BlockDictionary is a useful tool for tagging blocks in a way that is compatible with other mods (as long as they have MelonLib installed).
+ * @since 1.0
  */
 public class BlockDictionary {
     private static boolean initialized = false;
@@ -195,6 +196,7 @@ public class BlockDictionary {
      *
      * @param name The unique name for this ore 'oreIron', 'blockGold', etc..
      * @return A number representing the ID for this ore type
+     * @since 1.0
      */
     public static int getOreID(String name) {
         Integer id = nameToId.get(name);
@@ -214,6 +216,7 @@ public class BlockDictionary {
      *
      * @param id The ID to translate to a string
      * @return The String name, or "Unknown" if not found.
+     * @since 1.0
      */
     public static String getOreName(@Nonnegative int id) {
         return (id < idToName.size()) ? idToName.get(id) : "Unknown";
@@ -225,6 +228,7 @@ public class BlockDictionary {
      *
      * @param block The meta block of the ore.
      * @return An array of ids that this ore is registered as.
+     * @since 1.0
      */
     public static int[] getOreIDs(@Nonnull MetaBlock block) {
         Set<Integer> set = new HashSet<>();
@@ -249,6 +253,7 @@ public class BlockDictionary {
      *
      * @param name The ore name, directly calls getOreID
      * @return An NonNullList containing MetaBlocks registered for this ore
+     * @since 1.0
      */
     public static NonNullList<MetaBlock> getOres(String name) {
         return getOres(getOreID(name));
@@ -265,6 +270,7 @@ public class BlockDictionary {
      * @param name The ore name, directly calls getOreID if the flag is TRUE
      * @param alwaysCreateEntry Flag - should a new entry be created if empty
      * @return An NonNullList containing MetaBlocks registered for this ore
+     * @since 1.0
      */
     public static NonNullList<MetaBlock> getOres(String name, boolean alwaysCreateEntry) {
         if (alwaysCreateEntry) {
@@ -282,6 +288,7 @@ public class BlockDictionary {
      *
      * @param name The ore name
      * @return Whether that name is in the Block Dictionary.
+     * @since 1.0
      */
     public static boolean doesOreNameExist(String name) {
         return nameToId.get(name) != null;
@@ -291,6 +298,7 @@ public class BlockDictionary {
      * Retrieves a list of all unique ore names that are already registered.
      *
      * @return All unique ore names that are currently registered.
+     * @since 1.0
      */
     public static String[] getOreNames() {
         return idToName.toArray(new String[0]);
@@ -302,6 +310,7 @@ public class BlockDictionary {
      *
      * @param id The ore ID, see getOreID
      * @return A List containing MetaBlocks registered for this ore
+     * @since 1.0
      */
     private static NonNullList<MetaBlock> getOres(@Nonnegative int id) {
         return idToBlockUn.size() > id ? idToBlockUn.get(id) : EMPTY_LIST;
@@ -335,6 +344,7 @@ public class BlockDictionary {
      * @param block The MetaBlock to test
      * @param name The ore name to check for
      * @return Whether the MetaBlock is tagged with the ore name
+     * @since 1.0
      */
     public static boolean isBlockTagged(MetaBlock block, String name) {
         return getOres(name, false).contains(block);
@@ -344,6 +354,7 @@ public class BlockDictionary {
      * @param state The blockstate to test (automatically converted to MetaBlock)
      * @param name The ore name to check for
      * @return Whether the blockstate is tagged with the ore name
+     * @since 1.0
      */
     public static boolean isBlockTagged(IBlockState state, String name) {
         return getOres(name, false).contains(MetaBlock.of(state));
@@ -354,6 +365,7 @@ public class BlockDictionary {
      * @param name The name of the ore
      * @param ore The ore's Block
      * @param allMetadataValues Whether to use all 16 meta values or only 0
+     * @since 1.0
      */
     public static void registerOre(String name, Block ore, boolean allMetadataValues) {
         if (allMetadataValues) {
@@ -368,6 +380,7 @@ public class BlockDictionary {
      * @param name The name of the ore
      * @param ore The ore's Block
      * @param limitMeta How many metadata values to use
+     * @since 1.0
      */
     public static void registerOre(String name, Block ore, int limitMeta) {
         for (int i = 0; i < limitMeta; i++) {
@@ -379,6 +392,7 @@ public class BlockDictionary {
      * Registers an ore block into the dictionary.
      * @param name The name of the ore
      * @param ore The ore's blockstate (automatically converted to MetaBlock)
+     * @since 1.0
      */
     public static void registerOre(String name, IBlockState ore) {
         registerOre(name, MetaBlock.of(ore));
@@ -388,6 +402,7 @@ public class BlockDictionary {
      * Registers an ore block into the dictionary.
      * @param name The name of the ore
      * @param ore The ore's MetaBlock
+     * @since 1.0
      */
     public static void registerOre(String name, MetaBlock ore) {
         registerOreImpl(name, ore);
@@ -399,6 +414,7 @@ public class BlockDictionary {
      *
      * @param name The name of the ore
      * @param ore The ore's MetaBlock
+     * @since 1.0
      */
     private static void registerOreImpl(String name, MetaBlock ore) {
         if ("Unknown".equals(name)) return;
@@ -431,6 +447,7 @@ public class BlockDictionary {
     /**
      * Rebakes the BlockDictionary blockToId map.
      * Called when the IDs change, so that the dictionary does not get all messed up.
+     * @since 1.0
      */
     public static void rebakeMap() {
         MelonLib.logger.debug("Baking BlockDictionary:");
