@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["Siepert"],
   "credits": "",
-  "logoFile": "logo.png",
+  "logoFile": "assets/melonlib/logo.png",
   "screenshots": [],
   "dependencies": []
 }
