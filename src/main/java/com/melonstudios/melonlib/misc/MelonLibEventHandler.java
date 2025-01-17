@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 
 /**
  * Event bus subscriber of MelonLib.
- * There isn't really to see here tbh
+ * There isn't really much to see here tbh
  */
 @Mod.EventBusSubscriber(modid = "melonlib")
 public class MelonLibEventHandler {
