@@ -22,6 +22,7 @@ import org.lwjgl.input.Keyboard;
  */
 @Mod.EventBusSubscriber(modid = "melonlib")
 public class MelonLibEventHandler {
+    private static final int keyForDictEntries = Keyboard.KEY_LSHIFT; //TODO: config
 
     /**
      * Adds BlockDict and OreDict info to the item tooltip if advanced item info is enabled (F3 + H)
@@ -33,7 +34,7 @@ public class MelonLibEventHandler {
         Item item = stack.getItem();
 
         boolean hasEntries = false;
-        boolean display = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+        boolean display = Keyboard.isKeyDown(keyForDictEntries);
 
         if (item instanceof ItemBlock) {
             ItemBlock itemBlock = (ItemBlock) item;
@@ -58,7 +59,7 @@ public class MelonLibEventHandler {
                     }
                 }
             } catch (NullPointerException e) {
-                if (display) event.getToolTip().add("*failed to obtain blockdict data*");
+                if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
             }
         } else if (item instanceof ItemBlockSpecial) {
             ItemBlockSpecial special = (ItemBlockSpecial) item;
@@ -75,7 +76,7 @@ public class MelonLibEventHandler {
                 if (ids.length > 0) {
                     hasEntries = true;
                     if (display) {
-                        event.getToolTip().add("BlockDict entries:");
+                        event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_entries") + ":");
                         for (int id : ids) {
                             String name = BlockDictionary.getOreName(id);
                             event.getToolTip().add(" *" + name);
@@ -83,14 +84,14 @@ public class MelonLibEventHandler {
                     }
                 }
             } catch (NullPointerException e) {
-                if (display) event.getToolTip().add("*failed to obtain blockdict data*");
+                if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
             }
         }
         int[] ids = OreDictionary.getOreIDs(stack.copy());
         if (ids.length > 0) {
             hasEntries = true;
             if (display) {
-                event.getToolTip().add("OreDict entries:");
+                event.getToolTip().add(Localizer.translate("tooltip.melonlib.oredict_entries") + ":");
                 for (int id : ids) {
                     String name = OreDictionary.getOreName(id);
                     event.getToolTip().add(" *" + name);
@@ -99,7 +100,8 @@ public class MelonLibEventHandler {
         }
 
         if (hasEntries && !display) {
-            event.getToolTip().add("[shift] for dict entries");
+            event.getToolTip().add(Localizer.translate("tooltip.melonlib.key_for_dict_entries",
+                    Keyboard.getKeyName(keyForDictEntries)));
         }
     }
 

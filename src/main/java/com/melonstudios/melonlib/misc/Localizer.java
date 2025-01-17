@@ -2,13 +2,12 @@ package com.melonstudios.melonlib.misc;
 
 import net.minecraft.util.text.translation.I18n;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"deprecation"})
 public class Localizer {
     public static String translate(String key, Object... formatting) {
-        String base = I18n.translateToLocal(key);
         if (formatting.length > 0) {
-            return String.format(key, formatting);
+            return I18n.translateToLocalFormatted(key, formatting);
         }
-        return base;
+        return I18n.translateToLocal(key);
     }
 }
