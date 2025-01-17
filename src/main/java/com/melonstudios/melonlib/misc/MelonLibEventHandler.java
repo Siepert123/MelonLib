@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.misc;
 
+import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -22,7 +23,9 @@ import org.lwjgl.input.Keyboard;
  */
 @Mod.EventBusSubscriber(modid = "melonlib")
 public class MelonLibEventHandler {
-    private static final int keyForDictEntries = Keyboard.KEY_LSHIFT; //TODO: config
+    private static int getKeyForDictEntries() {
+        return MelonLibConfig.keyForDictEntriesTooltip;
+    }
 
     /**
      * Adds BlockDict and OreDict info to the item tooltip if advanced item info is enabled (F3 + H)
@@ -34,7 +37,7 @@ public class MelonLibEventHandler {
         Item item = stack.getItem();
 
         boolean hasEntries = false;
-        boolean display = Keyboard.isKeyDown(keyForDictEntries);
+        boolean display = Keyboard.isKeyDown(getKeyForDictEntries());
 
         if (item instanceof ItemBlock) {
             ItemBlock itemBlock = (ItemBlock) item;
@@ -101,7 +104,7 @@ public class MelonLibEventHandler {
 
         if (hasEntries && !display) {
             event.getToolTip().add(Localizer.translate("tooltip.melonlib.key_for_dict_entries",
-                    Keyboard.getKeyName(keyForDictEntries)));
+                    Keyboard.getKeyName(getKeyForDictEntries())));
         }
     }
 
