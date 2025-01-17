@@ -34,6 +34,9 @@ public class MelonLibEventHandler {
     @SubscribeEvent
     public static void expandItemTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
+
+        if (stack.isEmpty()) return;
+
         Item item = stack.getItem();
 
         boolean hasEntries = false;
