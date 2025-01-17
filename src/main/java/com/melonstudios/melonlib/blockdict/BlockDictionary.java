@@ -450,7 +450,7 @@ public class BlockDictionary {
      * @since 1.0
      */
     public static void rebakeMap() {
-        MelonLib.logger.debug("Baking BlockDictionary:");
+        MelonLib.logger.debug("Baking BlockDictionary");
         blockToId.clear();
         for (int id = 0; id < idToBlock.size(); id++) {
             NonNullList<MetaBlock> ores = idToBlock.get(id);
@@ -467,8 +467,10 @@ public class BlockDictionary {
                 }
                 List<Integer> ids = blockToId.computeIfAbsent(hash, k -> new ArrayList<>());
                 ids.add(id);
-                MelonLib.logger.debug("{} {}{} {}", id, getOreName(id), Integer.toHexString(hash), ore);
+                if (extraDebug) MelonLib.logger.debug("{} {}{} {}", id, getOreName(id), Integer.toHexString(hash), ore);
             }
         }
     }
+
+    private static final boolean extraDebug = false;
 }
