@@ -3,8 +3,10 @@ package com.melonstudios.melonlib.misc;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -42,6 +44,31 @@ public class MelonLibEventHandler {
                         event.getEntityPlayer().getPosition(),
                         EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
                         event.getEntityLiving(), EnumHand.MAIN_HAND
+                        )
+                );
+                int[] ids = BlockDictionary.getOreIDs(metaBlock);
+                if (ids.length > 0) {
+                    hasEntries = true;
+                    if (display) {
+                        event.getToolTip().add("BlockDict entries:");
+                        for (int id : ids) {
+                            String name = BlockDictionary.getOreName(id);
+                            event.getToolTip().add(" *" + name);
+                        }
+                    }
+                }
+            } catch (NullPointerException e) {
+                if (display) event.getToolTip().add("*failed to obtain blockdict data*");
+            }
+        } else if (item instanceof ItemBlockSpecial) {
+            ItemBlockSpecial special = (ItemBlockSpecial) item;
+            Block block = special.getBlock();
+            try {
+                MetaBlock metaBlock = MetaBlock.of(block.getStateForPlacement(
+                                event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
+                                event.getEntityPlayer().getPosition(),
+                                EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
+                                event.getEntityLiving(), EnumHand.MAIN_HAND
                         )
                 );
                 int[] ids = BlockDictionary.getOreIDs(metaBlock);
