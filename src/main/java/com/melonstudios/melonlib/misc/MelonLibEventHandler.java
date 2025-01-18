@@ -49,7 +49,8 @@ public class MelonLibEventHandler {
             ItemBlock itemBlock = (ItemBlock) item;
             Block block = itemBlock.getBlock();
             try {
-                MetaBlock metaBlock = MetaBlock.of(block.getStateForPlacement(
+                MetaBlock metaBlock = MetaBlock.of(
+                        block.getStateForPlacement(
                         event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
                         event.getEntityPlayer().getPosition(),
                         EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
