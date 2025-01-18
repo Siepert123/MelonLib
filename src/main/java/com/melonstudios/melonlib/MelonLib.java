@@ -1,15 +1,13 @@
 package com.melonstudios.melonlib;
 
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
-import net.minecraft.init.Blocks;
+import com.melonstudios.melonlib.command.CommandBlockDict;
+import com.melonstudios.melonlib.command.CommandOreDict;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
 
@@ -40,5 +38,11 @@ public class MelonLib {
     @EventHandler
     public void mappingChanged(FMLModIdMappingEvent event) {
         BlockDictionary.rebakeMap();
+    }
+
+    @EventHandler
+    public void serverStart(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandBlockDict());
+        event.registerServerCommand(new CommandOreDict());
     }
 }
