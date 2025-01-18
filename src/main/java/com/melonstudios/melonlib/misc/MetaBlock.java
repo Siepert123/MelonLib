@@ -8,6 +8,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A Block that has Metadata packaged with it.
@@ -19,6 +21,9 @@ import javax.annotation.Nonnull;
  */
 public class MetaBlock {
     public static final MetaBlock AIR = new MetaBlock(Blocks.AIR, 0);
+
+    //It may occur that many equal MetaBlocks will be created. This cache will save a little bit of memory
+    private static final Map<Block, MetaBlock[]> cache = new HashMap<>();
 
     private final Block block;
     private final int metadata;
@@ -95,7 +100,14 @@ public class MetaBlock {
      */
     public static MetaBlock of(Block block, int meta) {
         if (block == Blocks.AIR) return AIR;
-        return new MetaBlock(block, meta);
+        if (cache.get(block) == null) {
+            MetaBlock[] cacheEntries = new MetaBlock[16];
+            for (int i = 0; i < 16; i++) {
+                cacheEntries[i] = new MetaBlock(block, i);
+            }
+            cache.put(block, cacheEntries);
+        }
+        return cache.get(block)[meta];
     }
 
     /**
@@ -107,7 +119,14 @@ public class MetaBlock {
      */
     public static MetaBlock of(IBlockState state) {
         if (state.getBlock() == Blocks.AIR) return AIR;
-        return new MetaBlock(state.getBlock(), state.getBlock().getMetaFromState(state));
+        if (cache.get(state.getBlock()) == null) {
+            MetaBlock[] cacheEntries = new MetaBlock[16];
+            for (int i = 0; i < 16; i++) {
+                cacheEntries[i] = new MetaBlock(state.getBlock(), i);
+            }
+            cache.put(state.getBlock(), cacheEntries);
+        }
+        return cache.get(state.getBlock())[state.getBlock().getMetaFromState(state)];
     }
 
     /**

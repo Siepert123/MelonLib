@@ -207,31 +207,31 @@ public class RenderMelon {
      * @since 1.0
      */
     public static void renderResizedBlockstate(IBlockState state, float brightness, BlockPos pos, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        GL11.glPushMatrix();
+        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+        textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         renderResizedBlockstateUnsafe(state, brightness, pos,
                 Math.min(minX, maxX), Math.min(minY, maxY),
                 Math.min(minZ, maxZ), Math.max(minX, maxX), Math.max(minY, maxY), Math.max(minZ, maxZ)
         );
+        GL11.glPopMatrix();
     }
 
     /**
      * @see RenderMelon#renderResizedBlockstate(IBlockState, float, BlockPos, double, double, double, double, double, double) The recommended usage
      */
     public static void renderResizedBlockstateUnsafe(IBlockState state, float brightness, BlockPos pos, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        GL11.glPushMatrix();
-        glTranslatePixels(pos.getX() * 16, pos.getY() * 16, pos.getZ() * 16);
+        GL11.glTranslatef(pos.getX(), pos.getY(), pos.getZ());
         glTranslatePixels(minX, minY, minZ);
         double dx = maxX - minX;
         double dy = maxY - minY;
         double dz = maxZ - minZ;
         glScalePixels(dx, dy, dz);
-        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
-        textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = Minecraft.getMinecraft()
                         .getBlockRendererDispatcher().getModelForState(state);
         GL11.glRotatef(-90, 0, 1, 0);
         Minecraft.getMinecraft().getBlockRendererDispatcher()
                         .getBlockModelRenderer().renderModelBrightness(model, state, brightness, true);
-        GL11.glPopMatrix();
     }
 
     /**
