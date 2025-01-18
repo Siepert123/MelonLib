@@ -14,6 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
@@ -32,6 +34,7 @@ public class MelonLibEventHandler {
      * @param event the event
      */
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void expandItemTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
 
