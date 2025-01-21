@@ -3,6 +3,7 @@ package com.melonstudios.melonlib;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
+import com.melonstudios.melonlib.misc.ServerHack;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -16,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class MelonLib {
     public static final String MODID = "melonlib";
     public static final String NAME = "MelonLib";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2";
 
     public static Logger logger;
 
@@ -42,7 +43,13 @@ public class MelonLib {
 
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
+        if (event.getServer() != null) ServerHack.setServer(event.getServer());
         event.registerServerCommand(new CommandBlockDict());
         event.registerServerCommand(new CommandOreDict());
+    }
+
+    @EventHandler
+    public void serverStop(FMLServerStoppingEvent event) {
+        ServerHack.removeServer();
     }
 }
