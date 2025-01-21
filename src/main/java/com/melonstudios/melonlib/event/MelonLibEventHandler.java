@@ -1,10 +1,10 @@
-package com.melonstudios.melonlib.misc;
+package com.melonstudios.melonlib.event;
 
 import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
+import com.melonstudios.melonlib.misc.Localizer;
+import com.melonstudios.melonlib.misc.MetaBlock;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
