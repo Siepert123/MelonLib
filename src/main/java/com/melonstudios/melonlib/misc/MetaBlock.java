@@ -59,10 +59,6 @@ public class MetaBlock {
             MetaBlock metaBlock = (MetaBlock) obj;
             return metaBlock.block.equals(block) && metaBlock.metadata == metadata;
         }
-        if (obj instanceof IBlockState) {
-            MetaBlock metaBlock = MetaBlock.of((IBlockState) obj);
-            return metaBlock.equals(this);
-        }
         return false;
     }
 

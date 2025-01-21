@@ -54,10 +54,6 @@ public class MetaItem {
             MetaItem metaItem = (MetaItem) obj;
             return metaItem.item == this.item && metaItem.metadata == this.metadata;
         }
-        if (obj instanceof ItemStack) {
-            MetaItem metaItem = MetaItem.of((ItemStack) obj);
-            return metaItem.equals(this);
-        }
         return false;
     }
 
