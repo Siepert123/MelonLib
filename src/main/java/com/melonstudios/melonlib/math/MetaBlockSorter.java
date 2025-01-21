@@ -5,6 +5,9 @@ import net.minecraft.block.Block;
 
 import java.util.Comparator;
 
+/**
+ * A sorter for MetaBlocks.
+ */
 public class MetaBlockSorter implements Comparator<MetaBlock> {
     public static final MetaBlockSorter instance = new MetaBlockSorter();
 

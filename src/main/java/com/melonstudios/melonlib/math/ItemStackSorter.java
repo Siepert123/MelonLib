@@ -5,6 +5,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Comparator;
 
+/**
+ * A sorter for ItemStacks.
+ */
 public class ItemStackSorter implements Comparator<ItemStack> {
     public static final ItemStackSorter instance = new ItemStackSorter();
 

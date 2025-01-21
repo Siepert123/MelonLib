@@ -7,6 +7,11 @@ import net.minecraft.world.World;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A functional interface for if you wish to provide additional information to a block.
+ * @since 1.2
+ */
+@SuppressWarnings("unused")
 @FunctionalInterface
 public interface IAdditionalBlockInfo {
     IAdditionalBlockInfo EMPTY = (world, pos, state) -> Collections.emptyList();

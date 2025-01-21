@@ -8,7 +8,12 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class APIBlockDisplay {
+/**
+ * The API class to interact with Block Display.
+ * @since 1.2
+ */
+@SuppressWarnings("unused")
+public final class APIBlockDisplay {
     private static final Map<Block, IAdditionalBlockInfo> customBlockInfoHandlers = new HashMap<>();
 
     public static void addCustomBlockInfoHandler(@Nonnull Block block, @Nonnull IAdditionalBlockInfo handler) {

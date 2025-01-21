@@ -24,7 +24,9 @@ import java.util.*;
  * The BlockDictionary is a useful tool for tagging blocks in a way that is compatible with other mods (as long as they have MelonLib installed).
  * @since 1.0
  */
-public class BlockDictionary {
+public final class BlockDictionary {
+    private BlockDictionary() {}
+
     private static boolean initialized = false;
     private static final List<String> idToName = new ArrayList<>();
     private static final Map<String, Integer> nameToId = new HashMap<>(128);

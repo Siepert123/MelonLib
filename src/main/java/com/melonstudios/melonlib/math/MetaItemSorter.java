@@ -5,6 +5,9 @@ import net.minecraft.item.Item;
 
 import java.util.Comparator;
 
+/**
+ * A sorter for MetaItems.
+ */
 public class MetaItemSorter implements Comparator<MetaItem> {
     public static final MetaItemSorter instance = new MetaItemSorter();
 

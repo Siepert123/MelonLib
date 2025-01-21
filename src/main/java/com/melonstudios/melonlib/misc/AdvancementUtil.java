@@ -14,12 +14,24 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A utility class for advancements
+ * @since 1.2
+ */
 public class AdvancementUtil {
+    /**
+     * A cache of achievements so that the server does not have to search for the advancement every time
+     */
     private static final Map<ResourceLocation, Advancement> cache = new HashMap<>();
     public static void clearCache() {
         cache.clear();
     }
 
+    /**
+     * Finds the Advancement with the passed ID.
+     * @param id The resource location that the advancement is located at.
+     * @return The advancement, or null if it is invalid.
+     */
     @Nullable
     public static Advancement getAdvancement(@Nonnull ResourceLocation id) {
         if (cache.containsKey(id)) return cache.get(id);
@@ -29,6 +41,11 @@ public class AdvancementUtil {
         return advancement;
     }
 
+    /**
+     * Grants an advancement to a player.
+     * @param player The player to grant the advancement to
+     * @param advancement The advancement to grant
+     */
     public static void grantAdvancement(@Nonnull EntityPlayerMP player, @Nullable Advancement advancement) {
         if (advancement == null) return;
         PlayerAdvancements advancements = player.getAdvancements();

@@ -5,7 +5,14 @@ import net.minecraft.entity.Entity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+/**
+ * A predicate for Entities.
+ * Can be passed into a function requiring a {@code Predicate<Entity>}.
+ *
+ * @since 1.2
+ * @see StatePredicate
+ * @see StackPredicate
+ */
 @SuppressWarnings("all")
 public abstract class EntityPredicate implements Predicate<Entity> {
     @Override

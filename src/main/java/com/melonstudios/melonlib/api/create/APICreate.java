@@ -6,12 +6,22 @@ import net.minecraft.block.state.IBlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class APICreate {
+/**
+ * The API class to interact with Create Legacy.
+ * @since 1.2
+ */
+@SuppressWarnings("unused")
+public final class APICreate {
     private static final List<Predicate<IBlockState>> WASHING_CATALYSTS = new ArrayList<>();
     private static final List<Predicate<IBlockState>> COOKING_CATALYSTS = new ArrayList<>();
     private static final List<Predicate<IBlockState>> HAUNTING_CATALYSTS = new ArrayList<>();
     private static final List<Predicate<IBlockState>> FAN_PASSES = new ArrayList<>();
 
+    /**
+     * Copies the contents of a catalyst list to another list.
+     * <p>
+     * *for internal use only*
+     */
     public static void copyFanContents(int id, List<Predicate<IBlockState>> list) {
         if (id == 0) {
             list.addAll(FAN_PASSES);
