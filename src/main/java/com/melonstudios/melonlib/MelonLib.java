@@ -3,6 +3,7 @@ package com.melonstudios.melonlib;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
+import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -51,5 +52,6 @@ public class MelonLib {
     @EventHandler
     public void serverStop(FMLServerStoppingEvent event) {
         ServerHack.removeServer();
+        AdvancementUtil.clearCache();
     }
 }
