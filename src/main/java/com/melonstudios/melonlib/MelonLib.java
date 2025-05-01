@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class MelonLib {
     public static final String MODID = "melonlib";
     public static final String NAME = "MelonLib";
-    public static final String VERSION = "1.2";
+    public static final String VERSION = "1.3";
 
     public static Logger logger;
 
