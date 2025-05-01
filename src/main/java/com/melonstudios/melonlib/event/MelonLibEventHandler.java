@@ -36,83 +36,86 @@ public class MelonLibEventHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void expandItemTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
+        try {
+            ItemStack stack = event.getItemStack();
 
-        if (stack.isEmpty()) return;
+            if (stack.isEmpty()) return;
 
-        Item item = stack.getItem();
+            Item item = stack.getItem();
 
-        boolean hasEntries = false;
-        boolean display = Keyboard.isKeyDown(getKeyForDictEntries());
+            boolean hasEntries = false;
+            boolean display = Keyboard.isKeyDown(getKeyForDictEntries());
 
-        if (item instanceof ItemBlock) {
-            ItemBlock itemBlock = (ItemBlock) item;
-            Block block = itemBlock.getBlock();
-            try {
-                MetaBlock metaBlock = MetaBlock.of(
-                        block.getStateForPlacement(
-                        event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
-                        event.getEntityPlayer().getPosition(),
-                        EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
-                        event.getEntityLiving(), EnumHand.MAIN_HAND
-                        )
-                );
-                int[] ids = BlockDictionary.getOreIDs(metaBlock);
-                if (ids.length > 0) {
-                    hasEntries = true;
-                    if (display) {
-                        event.getToolTip().add("BlockDict entries:");
-                        for (int id : ids) {
-                            String name = BlockDictionary.getOreName(id);
-                            event.getToolTip().add(" *" + name);
+            if (item instanceof ItemBlock) {
+                ItemBlock itemBlock = (ItemBlock) item;
+                Block block = itemBlock.getBlock();
+                try {
+                    MetaBlock metaBlock = MetaBlock.of(
+                            block.getStateForPlacement(
+                                    event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
+                                    event.getEntityPlayer().getPosition(),
+                                    EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
+                                    event.getEntityLiving(), EnumHand.MAIN_HAND
+                            )
+                    );
+                    int[] ids = BlockDictionary.getOreIDs(metaBlock);
+                    if (ids.length > 0) {
+                        hasEntries = true;
+                        if (display) {
+                            event.getToolTip().add("BlockDict entries:");
+                            for (int id : ids) {
+                                String name = BlockDictionary.getOreName(id);
+                                event.getToolTip().add(" *" + name);
+                            }
                         }
                     }
+                } catch (NullPointerException e) {
+                    if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
                 }
-            } catch (NullPointerException e) {
-                if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
-            }
-        } else if (item instanceof ItemBlockSpecial) {
-            ItemBlockSpecial special = (ItemBlockSpecial) item;
-            Block block = special.getBlock();
-            try {
-                MetaBlock metaBlock = MetaBlock.of(block.getStateForPlacement(
-                                event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
-                                event.getEntityPlayer().getPosition(),
-                                EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
-                                event.getEntityLiving(), EnumHand.MAIN_HAND
-                        )
-                );
-                int[] ids = BlockDictionary.getOreIDs(metaBlock);
-                if (ids.length > 0) {
-                    hasEntries = true;
-                    if (display) {
-                        event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_entries") + ":");
-                        for (int id : ids) {
-                            String name = BlockDictionary.getOreName(id);
-                            event.getToolTip().add(" *" + name);
+            } else if (item instanceof ItemBlockSpecial) {
+                ItemBlockSpecial special = (ItemBlockSpecial) item;
+                Block block = special.getBlock();
+                try {
+                    MetaBlock metaBlock = MetaBlock.of(block.getStateForPlacement(
+                                    event.getEntityPlayer() != null ? event.getEntityPlayer().world : null,
+                                    event.getEntityPlayer().getPosition(),
+                                    EnumFacing.DOWN, 0, 0, 0, stack.getMetadata(),
+                                    event.getEntityLiving(), EnumHand.MAIN_HAND
+                            )
+                    );
+                    int[] ids = BlockDictionary.getOreIDs(metaBlock);
+                    if (ids.length > 0) {
+                        hasEntries = true;
+                        if (display) {
+                            event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_entries") + ":");
+                            for (int id : ids) {
+                                String name = BlockDictionary.getOreName(id);
+                                event.getToolTip().add(" *" + name);
+                            }
                         }
                     }
-                }
-            } catch (NullPointerException e) {
-                if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
-            }
-        }
-        int[] ids = OreDictionary.getOreIDs(stack.copy());
-        if (ids.length > 0) {
-            hasEntries = true;
-            if (display) {
-                event.getToolTip().add(Localizer.translate("tooltip.melonlib.oredict_entries") + ":");
-                for (int id : ids) {
-                    String name = OreDictionary.getOreName(id);
-                    event.getToolTip().add(" *" + name);
+                } catch (NullPointerException e) {
+                    if (display) event.getToolTip().add(Localizer.translate("tooltip.melonlib.blockdict_data_fail"));
                 }
             }
-        }
+            int[] ids = OreDictionary.getOreIDs(stack.copy());
+            if (ids.length > 0) {
+                hasEntries = true;
+                if (display) {
+                    event.getToolTip().add(Localizer.translate("tooltip.melonlib.oredict_entries") + ":");
+                    for (int id : ids) {
+                        String name = OreDictionary.getOreName(id);
+                        event.getToolTip().add(" *" + name);
+                    }
+                }
+            }
 
-        if (hasEntries && !display) {
-            event.getToolTip().add(Localizer.translate("tooltip.melonlib.key_for_dict_entries",
-                    Keyboard.getKeyName(getKeyForDictEntries())));
+            if (hasEntries && !display) {
+                event.getToolTip().add(Localizer.translate("tooltip.melonlib.key_for_dict_entries",
+                        Keyboard.getKeyName(getKeyForDictEntries())));
+            }
+        } catch (Throwable throwable) {
+            event.getToolTip().add(throwable.getClass().getName() + ": " + throwable.getLocalizedMessage());
         }
     }
-
 }
