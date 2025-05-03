@@ -18,6 +18,12 @@ import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+/**
+ * A packet for synchronizing some {@link ISyncedTE} data.
+ * @since 1.4
+ * @see ISyncedTE
+ * @see PacketRequestSyncTE
+ */
 public class PacketSyncTE implements IMessage {
 
     private boolean compressedNBT;

@@ -8,6 +8,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * A packet requesting a synchronization of any {@link ISyncedTE}.
+ * @since 1.4
+ * @see ISyncedTE
+ * @see PacketSyncTE
+ */
 public class PacketRequestSyncTE implements IMessage {
     private BlockPos pos;
     @Override
