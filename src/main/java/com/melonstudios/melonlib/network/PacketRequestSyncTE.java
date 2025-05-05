@@ -26,8 +26,14 @@ public class PacketRequestSyncTE implements IMessage {
         buf.writeLong(this.pos.toLong());
     }
 
-    public static class Handler implements IMessageHandler<PacketRequestSyncTE, PacketSyncTE> {
+    public PacketRequestSyncTE() {
 
+    }
+    public PacketRequestSyncTE(ISyncedTE te) {
+        this.pos = te.self_ISyncedTE().getPos();
+    }
+
+    public static class Handler implements IMessageHandler<PacketRequestSyncTE, PacketSyncTE> {
         @Override
         public PacketSyncTE onMessage(PacketRequestSyncTE message, MessageContext ctx) {
             TileEntity te = ctx.getServerHandler().player.world.getTileEntity(message.pos);

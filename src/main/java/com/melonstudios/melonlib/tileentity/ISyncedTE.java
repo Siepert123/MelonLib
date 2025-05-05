@@ -46,7 +46,7 @@ public interface ISyncedTE {
     }
     //Call this on da client
     default void requestSync() {
-        MelonLib.net.sendToServer(new PacketRequestSyncTE());
+        MelonLib.net.sendToServer(new PacketRequestSyncTE(this));
     }
     default double synchronizationRange() {
         return 64.0;
