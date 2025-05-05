@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 public class MelonLib {
     public static final String MODID = "melonlib";
     public static final String NAME = "MelonLib";
-    public static final String VERSION = "1.4";
+    public static final String VERSION = "1.5";
 
     public static Logger logger;
     public static SimpleNetworkWrapper net;
