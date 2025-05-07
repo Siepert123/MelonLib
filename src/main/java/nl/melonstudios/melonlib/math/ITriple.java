@@ -1,14 +1,14 @@
 package nl.melonstudios.melonlib.math;
 
-public interface ITriple<X, Y, Z> {
-    X getValue1();
-    void setValue1(X value);
+public interface ITriple<T1, T2, T3> {
+    T1 getValue1();
+    void setValue1(T1 value);
 
-    Y getValue2();
-    void setValue2(Y value);
+    T2 getValue2();
+    void setValue2(T2 value);
 
-    Z getValue3();
-    void setValue3(Z value);
+    T3 getValue3();
+    void setValue3(T3 value);
 
-    ITriple<X, Y, Z> copy();
+    ITriple<T1, T2, T3> copy();
 }

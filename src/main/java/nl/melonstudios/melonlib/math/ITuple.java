@@ -1,11 +1,11 @@
 package nl.melonstudios.melonlib.math;
 
-public interface ITuple<X, Y> {
-    X getValue1();
-    void setValue1(X value);
+public interface ITuple<T1, T2> {
+    T1 getValue1();
+    void setValue1(T1 value);
 
-    Y getValue2();
-    void setValue2(Y value2);
+    T2 getValue2();
+    void setValue2(T2 value2);
 
-    ITuple<X, Y> copy();
+    ITuple<T1, T2> copy();
 }

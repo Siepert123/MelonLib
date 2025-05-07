@@ -44,14 +44,17 @@ public interface ISyncedTE {
     default void sync() {
         MelonLib.net.sendToAllTracking(new PacketSyncTE(this), this.getTargetPoint());
     }
-    //Call this on da client
+
+    /**
+     * Call this function on the client (preferably in {@link TileEntity#onLoad()}) to request a synchronization.
+     */
     default void requestSync() {
         MelonLib.net.sendToServer(new PacketRequestSyncTE(this));
     }
+
     default double synchronizationRange() {
         return 64.0;
     }
-    //Target point
     default NetworkRegistry.TargetPoint getTargetPoint() {
         TileEntity te = this.self_ISyncedTE();
         return new NetworkRegistry.TargetPoint(te.getWorld().provider.getDimension(),

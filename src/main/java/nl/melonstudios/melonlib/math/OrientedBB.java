@@ -3,6 +3,10 @@ package nl.melonstudios.melonlib.math;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * A version of the {@link AxisAlignedBB} that can be rotated freely.
+ * @since 1.6
+ */
 public class OrientedBB {
     Vec3d center;
     Vec3d extents;
@@ -58,9 +62,9 @@ public class OrientedBB {
     }
 
     public AxisAlignedBB getAsAABB() {
-        double x = this.extents.x / 2;
-        double y = this.extents.y / 2;
-        double z = this.extents.z / 2;
+        double x = this.extents.x;
+        double y = this.extents.y;
+        double z = this.extents.z;
         return new AxisAlignedBB(0, 0, 0, 0, 0, 0).offset(this.center)
                 .expand(x, y, z).expand(-x, -y, -z);
     }

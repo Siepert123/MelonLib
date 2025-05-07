@@ -2,6 +2,9 @@ package nl.melonstudios.melonlib.misc;
 
 import net.minecraft.util.text.translation.I18n;
 
+/**
+ * A simple class to localize entries.
+ */
 @SuppressWarnings("deprecation")
 public class Localizer {
     public static String translate(String key, Object... formatting) {
