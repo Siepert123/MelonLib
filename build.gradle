@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = "${mcversion}-${version}"
-group = 'com.melonstudios.melonlib'
+group = 'nl.melonstudios.melonlib'
 archivesBaseName = 'melonlib'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
