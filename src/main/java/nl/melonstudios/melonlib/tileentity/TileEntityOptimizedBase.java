@@ -14,6 +14,7 @@ public abstract class TileEntityOptimizedBase extends TileEntityCachedRenderBB i
     /**
      * Changes the lazy tick rate for this tile entity.
      * @param rate The new lazy tick rate
+     * @since 1.6
      */
     protected void setTickRateLazy(int rate) {
         this.tickRateLazy = this.tickCounterLazy = rate;

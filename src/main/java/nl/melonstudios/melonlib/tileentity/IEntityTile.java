@@ -39,6 +39,7 @@ public interface IEntityTile<T extends TileEntity> extends ITileEntityProvider {
      * @param pos The location of the tile entity
      * @return The TileEntity, or null if it's not there / doesn't match
      */
+    @SuppressWarnings("unchecked")
     default T getTileEntity(World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (this.getTEClass().isInstance(te)) return (T) te;
@@ -52,6 +53,7 @@ public interface IEntityTile<T extends TileEntity> extends ITileEntityProvider {
      * @param pos The location of the tile entity
      * @return The Optional containing the tile entity, or an empty optional if it's not there / doesn't match
      */
+    @SuppressWarnings("unchecked")
     default Optional<T> getTileEntityOptional(World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (this.getTEClass().isInstance(te)) return Optional.of((T)te);

@@ -10,6 +10,7 @@ import net.minecraft.util.EnumFacing;
  * Contains many common blockstate properties.
  * @since 1.6
  */
+@SuppressWarnings("unused")
 public class BlockStateProperties {
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
