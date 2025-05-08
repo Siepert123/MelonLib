@@ -45,6 +45,7 @@ public class AABB {
      * @param priorityAxis The axis to optimize along
      * @param recursionsLeft The depth of optimizations allowed
      * @return The optimized list of bounding boxes
+     * @since 1.6
      */
     public static List<AxisAlignedBB> optimize(List<AxisAlignedBB> boxes, EnumFacing.Axis priorityAxis, int recursionsLeft) {
         List<AxisAlignedBB> optimized = new ArrayList<>(boxes.size() / 2);
@@ -73,6 +74,7 @@ public class AABB {
      * @param boxes The unoptimized bounding box list
      * @param recursions The depth of optimizations allowed
      * @return The best axis to optimize along
+     * @since 1.6
      */
     public static EnumFacing.Axis getBestOptimizationAxis(List<AxisAlignedBB> boxes, int recursions) {
         int sizeX = optimize(new ArrayList<>(boxes), EnumFacing.Axis.X, recursions).size();
@@ -90,12 +92,13 @@ public class AABB {
      * @param b Another AxisAlignedBB
      * @param along The axis to check the merge along
      * @return True if the boxes can be merged without issue
+     * @since 1.6
      */
     public static boolean mergeable(AxisAlignedBB a, AxisAlignedBB b, EnumFacing.Axis along) {
         switch (along) {
-            case X: return a.minY == b.minY && a.maxY == b.maxY && a.minZ == b.minZ && a.maxZ == b.maxZ && intersectsX(a, b);
-            case Y: return a.minX == b.minX && a.maxX == b.maxX && a.minZ == b.minZ && a.maxZ == b.maxZ && intersectsY(a, b);
-            case Z: return a.minX == b.minX && a.maxX == b.maxX && a.minY == b.maxY && a.maxY == b.maxY && intersectsZ(a, b);
+            case X: return a.minY == b.minY && a.maxY == b.maxY && a.minZ == b.minZ && a.maxZ == b.maxZ && touchesX(a, b);
+            case Y: return a.minX == b.minX && a.maxX == b.maxX && a.minZ == b.minZ && a.maxZ == b.maxZ && touchesY(a, b);
+            case Z: return a.minX == b.minX && a.maxX == b.maxX && a.minY == b.maxY && a.maxY == b.maxY && touchesZ(a, b);
         }
         return false;
     }
@@ -105,6 +108,7 @@ public class AABB {
      * @param a One box
      * @param b Another box
      * @return The merged {@link AxisAlignedBB}
+     * @since 1.6
      */
     public static AxisAlignedBB merge(AxisAlignedBB a, AxisAlignedBB b) {
         double minX = Math.min(a.minX, b.minX);
@@ -116,13 +120,17 @@ public class AABB {
         return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    public static boolean intersectsX(AxisAlignedBB a, AxisAlignedBB b) {
-        return a.minX < b.maxX && a.maxX > b.minX;
+    public static boolean touches(AxisAlignedBB a, AxisAlignedBB b) {
+        return touchesX(a, b) && touchesY(a, b) && touchesZ(a, b);
     }
-    public static boolean intersectsY(AxisAlignedBB a, AxisAlignedBB b) {
-        return a.minY < b.maxY && a.maxY > b.minY;
+
+    public static boolean touchesX(AxisAlignedBB a, AxisAlignedBB b) {
+        return a.minX <= b.maxX && a.maxX >= b.minX;
     }
-    public static boolean intersectsZ(AxisAlignedBB a, AxisAlignedBB b) {
-        return a.minZ < b.maxZ && a.maxZ > b.minZ;
+    public static boolean touchesY(AxisAlignedBB a, AxisAlignedBB b) {
+        return a.minY <= b.maxY && a.maxY >= b.minY;
+    }
+    public static boolean touchesZ(AxisAlignedBB a, AxisAlignedBB b) {
+        return a.minZ <= b.maxZ && a.maxZ >= b.minZ;
     }
 }
