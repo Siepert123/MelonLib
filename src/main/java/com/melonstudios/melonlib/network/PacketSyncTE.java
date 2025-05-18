@@ -1,5 +1,8 @@
 package com.melonstudios.melonlib.network;
 
+import com.melonstudios.melonlib.MelonLib;
+import com.melonstudios.melonlib.sided.ClientPacketStaller;
+import com.melonstudios.melonlib.sided.SidedExecution;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -13,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -26,9 +30,9 @@ import java.util.zip.GZIPOutputStream;
  */
 public class PacketSyncTE implements IMessage {
 
-    private boolean compressedNBT;
-    private BlockPos pos;
-    private NBTTagCompound nbt;
+    public boolean compressedNBT;
+    public BlockPos pos;
+    public NBTTagCompound nbt;
     @Override
     public void fromBytes(ByteBuf buf) {
         this.compressedNBT = buf.readBoolean();
@@ -81,16 +85,7 @@ public class PacketSyncTE implements IMessage {
     public static class Handler implements IMessageHandler<PacketSyncTE, IMessage> {
         @Override
         public IMessage onMessage(PacketSyncTE message, MessageContext ctx) {
-            Minecraft mc = Minecraft.getMinecraft();
-            mc.addScheduledTask(() -> {
-                World world = mc.world;
-                if (world.isBlockLoaded(message.pos)) {
-                    TileEntity te = world.getTileEntity(message.pos);
-                    if (te instanceof ISyncedTE) {
-                        ((ISyncedTE)te).readPacket(message.nbt);
-                    }
-                }
-            });
+            MelonLib.proxy.packetSyncTE(message, this, ctx);
             return null;
         }
     }

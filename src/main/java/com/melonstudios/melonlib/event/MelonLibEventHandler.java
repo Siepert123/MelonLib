@@ -4,7 +4,9 @@ import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.MetaBlock;
+import com.melonstudios.melonlib.sided.ClientPacketStaller;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
@@ -14,6 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -116,6 +119,19 @@ public class MelonLibEventHandler {
             }
         } catch (Throwable throwable) {
             event.getToolTip().add(throwable.getClass().getName() + ": " + throwable.getLocalizedMessage());
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public static void clientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (mc.world != null) {
+                ClientPacketStaller.tick();
+            } else {
+                ClientPacketStaller.STALLS.clear();
+            }
         }
     }
 }
