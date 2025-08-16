@@ -9,7 +9,9 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,7 +25,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * A packet for synchronizing some {@link ISyncedTE} data.
+ * A packet for synchronizing some {@link ISyncedTE} data. Revised in 1.7
  * @since 1.4
  * @see ISyncedTE
  * @see PacketRequestSyncTE
@@ -37,20 +39,11 @@ public class PacketSyncTE implements IMessage {
     public void fromBytes(ByteBuf buf) {
         this.compressedNBT = buf.readBoolean();
         this.pos = BlockPos.fromLong(buf.readLong());
-        if (this.compressedNBT) {
-            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteBufInputStream(buf))))) {
-                this.nbt = CompressedStreamTools.read(in);
-            } catch (IOException e) {
-                e.printStackTrace();
-                if (this.nbt == null) this.nbt = new NBTTagCompound();
-            }
-        } else {
-            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new ByteBufInputStream(buf)))) {
-                this.nbt = CompressedStreamTools.read(in);
-            } catch (IOException e) {
-                e.printStackTrace();
-                if (this.nbt == null) this.nbt = new NBTTagCompound();
-            }
+        try {
+            this.nbt = new PacketBuffer(buf).readCompoundTag();
+        } catch (IOException e) {
+            if (this.nbt == null) this.nbt = new NBTTagCompound();
+            MelonLib.logger.error("help!!", e);
         }
     }
 
@@ -58,21 +51,14 @@ public class PacketSyncTE implements IMessage {
     public void toBytes(ByteBuf buf) {
         buf.writeBoolean(this.compressedNBT);
         buf.writeLong(this.pos.toLong());
-        if (this.compressedNBT) {
-            try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(new ByteBufOutputStream(buf))))) {
-                CompressedStreamTools.write(this.nbt, out);
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to write compressed TE sync packet", e);
-            }
-        } else {
-            try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new ByteBufOutputStream(buf)))) {
-                CompressedStreamTools.write(this.nbt, out);
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to write uncompressed TE sync packet", e);
-            }
-        }
+        new PacketBuffer(buf).writeCompoundTag(this.nbt);
     }
 
+    public PacketSyncTE(ISyncedTE te, BlockPos pos) {
+        this.compressedNBT = te.compressPacketNBT();
+        this.pos = pos;
+        this.nbt = te.writePacket();
+    }
     public PacketSyncTE(ISyncedTE te) {
         this.compressedNBT = te.compressPacketNBT();
         this.pos = te.self_ISyncedTE().getPos();

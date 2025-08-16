@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.sided;
 
+import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import net.minecraft.client.Minecraft;
@@ -24,7 +25,7 @@ public class ClientProxy extends AbstractProxy {
         net.registerMessage(
                 SidedExecution.supplyIf(Side.CLIENT, PacketSyncTE.Handler::new).get(),
                 PacketSyncTE.class,
-                0, Side.CLIENT
+                1, Side.CLIENT
         );
     }
 
@@ -43,6 +44,7 @@ public class ClientProxy extends AbstractProxy {
                 }
             } else retry = true;
             if (retry) {
+                MelonLib.logger.warn("No tile entity at {}, retrying", packet.pos);
                 ClientPacketStaller.add(new ClientPacketStaller.Stall(packet, handler, ctx));
             }
         });

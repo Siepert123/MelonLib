@@ -4,13 +4,16 @@ import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.MetaBlock;
+import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.sided.ClientPacketStaller;
+import com.melonstudios.melonlib.sided.ServerPacketStaller;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -39,6 +42,7 @@ public class MelonLibEventHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void expandItemTooltip(ItemTooltipEvent event) {
+        if (MelonLibConfig.disableDictEntryTooltip) return;
         try {
             ItemStack stack = event.getItemStack();
 
@@ -131,6 +135,16 @@ public class MelonLibEventHandler {
                 ClientPacketStaller.tick();
             } else {
                 ClientPacketStaller.STALLS.clear();
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void serverTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            if (ServerHack.exists()) {
+                ServerPacketStaller.tick();
+            } else {
+                ServerPacketStaller.STALLS.clear();
             }
         }
     }
