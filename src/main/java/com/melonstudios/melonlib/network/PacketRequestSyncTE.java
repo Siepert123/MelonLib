@@ -1,7 +1,6 @@
 package com.melonstudios.melonlib.network;
 
 import com.melonstudios.melonlib.MelonLib;
-import com.melonstudios.melonlib.sided.ServerPacketStaller;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;

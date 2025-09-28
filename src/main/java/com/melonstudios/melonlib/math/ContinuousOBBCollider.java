@@ -2,9 +2,9 @@ package com.melonstudios.melonlib.math;
 
 import net.minecraft.util.math.Vec3d;
 
+import static com.melonstudios.melonlib.math.OBBCollider.*;
 import static java.lang.Math.abs;
 import static java.lang.Math.signum;
-import static com.melonstudios.melonlib.math.OBBCollider.*;
 
 public class ContinuousOBBCollider {
     public static ContinuousSeparationManifold separateBBs(Vec3d cA, Vec3d cB, Vec3d eA, Vec3d eB,

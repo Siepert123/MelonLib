@@ -6,10 +6,7 @@ import com.melonstudios.melonlib.command.CommandOreDict;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
-import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.sided.AbstractProxy;
-import com.melonstudios.melonlib.sided.ClientPacketStaller;
-import com.melonstudios.melonlib.sided.SidedExecution;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -17,13 +14,10 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
-
-import java.util.function.Supplier;
 
 //Main mod class. Not much to see here
 @Mod(modid = MelonLib.MODID, name = MelonLib.NAME, version = MelonLib.VERSION)

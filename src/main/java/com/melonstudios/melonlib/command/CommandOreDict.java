@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.command;
 
+import com.melonstudios.melonlib.misc.FileUtil;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -10,7 +11,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.oredict.OreDictionary;
-import com.melonstudios.melonlib.misc.FileUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
