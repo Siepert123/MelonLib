@@ -49,7 +49,8 @@ public class PacketRequestSyncTE implements IMessage {
             if (te instanceof ISyncedTE) {
                 return new PacketSyncTE((ISyncedTE) te, message.pos);
             } else if (te == null) {
-                ServerPacketStaller.add(new ServerPacketStaller.Stall(message, this, ctx));
+                //ServerPacketStaller.add(new ServerPacketStaller.Stall(message, this, ctx));
+                MelonLib.logger.warn("No tile entity at {}, skipping", message.pos);
             }
             return null;
         }

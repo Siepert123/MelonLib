@@ -44,8 +44,9 @@ public class ClientProxy extends AbstractProxy {
                 }
             } else retry = true;
             if (retry) {
-                MelonLib.logger.warn("No tile entity at {}, retrying", packet.pos);
-                ClientPacketStaller.add(new ClientPacketStaller.Stall(packet, handler, ctx));
+                //MelonLib.logger.warn("No tile entity at {}, retrying", packet.pos);
+                //ClientPacketStaller.add(new ClientPacketStaller.Stall(packet, handler, ctx));
+                MelonLib.logger.warn("No tile entity at {}, skipping", packet.pos);
             }
         });
     }
