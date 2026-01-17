@@ -84,6 +84,12 @@ public final class BlockDictionary {
             registerOre("fenceGateWood", Blocks.ACACIA_FENCE_GATE, 8);
             registerOre("treeSapling", Blocks.SAPLING, 6);
             registerOre("vine", Blocks.VINE, true);
+            BlockDictionary.registerOre("treeLeaves", Blocks.LEAVES, true);
+            for (int i = 0; i < 2; i++) {
+                BlockDictionary.registerOre("treeLeaves", MetaBlock.of(Blocks.LEAVES2, i));
+                BlockDictionary.registerOre("treeLeaves", MetaBlock.of(Blocks.LEAVES2, i | 4));
+                BlockDictionary.registerOre("treeLeaves", MetaBlock.of(Blocks.LEAVES2, i | 8));
+            }
 
             //ores
             registerOre("oreCoal", Blocks.COAL_ORE, false);
