@@ -5,6 +5,7 @@ import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.MetaBlock;
 import com.melonstudios.melonlib.misc.ServerHack;
+import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.sided.ClientPacketStaller;
 import com.melonstudios.melonlib.sided.ServerPacketStaller;
 import net.minecraft.block.Block;
@@ -145,6 +146,7 @@ public class MelonLibEventHandler {
             } else {
                 ServerPacketStaller.STALLS.clear();
             }
+            TileSyncFix.getInstance().flush();
         }
     }
 }

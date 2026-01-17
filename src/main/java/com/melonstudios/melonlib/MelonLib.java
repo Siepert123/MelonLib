@@ -5,6 +5,7 @@ import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
+import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.sided.AbstractProxy;
 import net.minecraft.init.Items;
@@ -74,5 +75,10 @@ public class MelonLib {
     public void serverStop(FMLServerStoppingEvent event) {
         ServerHack.removeServer();
         AdvancementUtil.clearCache();
+    }
+
+    @EventHandler
+    public void serverStopped(FMLServerStoppedEvent event) {
+        TileSyncFix.getInstance().clear();
     }
 }

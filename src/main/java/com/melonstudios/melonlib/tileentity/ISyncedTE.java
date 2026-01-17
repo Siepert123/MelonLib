@@ -1,6 +1,7 @@
 package com.melonstudios.melonlib.tileentity;
 
 import com.melonstudios.melonlib.MelonLib;
+import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +43,7 @@ public interface ISyncedTE {
      * When the client receives the packet, the NBT contents will be read out by {@link #readPacket(NBTTagCompound)}.
      */
     default void sync() {
-        MelonLib.net.sendToAllTracking(new PacketSyncTE(this), this.getTargetPoint());
+        TileSyncFix.getInstance().sync(this);
     }
 
     /**

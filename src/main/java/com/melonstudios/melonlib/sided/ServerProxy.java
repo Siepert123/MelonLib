@@ -17,7 +17,7 @@ public class ServerProxy extends AbstractProxy {
         net.registerMessage(
                 new PacketSyncTE.Handler(),
                 PacketSyncTE.class,
-                0, Side.CLIENT
+                1, Side.CLIENT
         );
     }
 }
