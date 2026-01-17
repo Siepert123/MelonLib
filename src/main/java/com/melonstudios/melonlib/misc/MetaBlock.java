@@ -35,10 +35,10 @@ public class MetaBlock {
     }
 
     public Block getBlock() {
-        return block;
+        return this.block;
     }
     public int getMetadata() {
-        return metadata;
+        return this.metadata;
     }
 
     /**
@@ -50,22 +50,21 @@ public class MetaBlock {
 
     @Override
     public String toString() {
-        return String.format("%s/%s", block.getRegistryName(), metadata);
+        return this.block.getRegistryName() + "/" + this.metadata;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MetaBlock) {
             MetaBlock metaBlock = (MetaBlock) obj;
-            return metaBlock.block.equals(block) && metaBlock.metadata == metadata;
+            return metaBlock.block == this.block && metaBlock.metadata == this.metadata;
         }
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int hashCode() {
-        return Block.getStateId(block.getStateFromMeta(metadata));
+        return Block.getIdFromBlock(this.block) + (this.metadata << 12);
     }
 
     /**
@@ -134,6 +133,9 @@ public class MetaBlock {
      */
     public static MetaBlock of(int stateId) {
         if (stateId == 0) return AIR;
-        return of(Block.getStateById(stateId));
+        int b = stateId & 4095;
+        if (b == 0) return AIR;
+        int m = (stateId >> 12) & 15;
+        return of(Block.getBlockById(b), m);
     }
 }
