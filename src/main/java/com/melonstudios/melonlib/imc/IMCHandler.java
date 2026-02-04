@@ -16,6 +16,7 @@ public class IMCHandler {
                 Class<?> clazz = Class.forName(message.getStringValue());
                 // noinspection unchecked
                 DimensionTeleporterSoundFix.add((Class<? extends ITeleporter>) clazz);
+                MelonLib.logger.debug("Received DimensionTeleporterSoundFix IMC message for {}", clazz.toString());
             } catch (Exception e) {
                 MelonLib.logger.warn("Received malformed DimensionTeleporterSoundFix IMC message: {}", e.toString());
             }
