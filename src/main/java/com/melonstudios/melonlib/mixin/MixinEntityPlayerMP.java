@@ -27,7 +27,7 @@ public class MixinEntityPlayerMP {
     @Shadow
     private int lastFoodLevel;
 
-    @Inject(method = "changeDimension", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "changeDimension", at = @At("HEAD"), cancellable = true, remap = false)
     public void disableNetherPortalSFX(int dimensionIn, ITeleporter teleporter, CallbackInfoReturnable<Entity> cir) {
         if (DimensionTeleporterSoundFix.applies(teleporter)) {
             cir.cancel();

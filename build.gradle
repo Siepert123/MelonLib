@@ -117,7 +117,7 @@ publishing {
 sourceSets {
     main {
         output.resourcesDir = output.classesDir
-//        refMap = melonlib_mixin_refmap
+        refMap = melonlib_mixin_refmap
     }
 }
 
