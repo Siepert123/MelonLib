@@ -3,6 +3,7 @@ package com.melonstudios.melonlib;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
+import com.melonstudios.melonlib.imc.IMCHandler;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.misc.TileSyncFix;
@@ -57,6 +58,13 @@ public class MelonLib {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
+    }
+
+    @EventHandler
+    public void youGotMail(FMLInterModComms.IMCEvent event) {
+        for (FMLInterModComms.IMCMessage message : event.getMessages()) {
+            IMCHandler.process(message);
+        }
     }
 
     @EventHandler

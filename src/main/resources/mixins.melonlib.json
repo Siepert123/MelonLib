@@ -1,0 +1,8 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.melonstudios.melonlib.mixin",
+  "refmap": "refmap.melonlib.json",
+  "mixins": [
+    "MixinEntityPlayerMP"
+  ]
+}
