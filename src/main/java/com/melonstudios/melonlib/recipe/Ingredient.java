@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,6 +20,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * Better alternative to simple {@link ItemStack} inputs.
+ * Allows for many different options, and contains helper functions for serialization.
+ * Also has a {@link FluidStack} alternative.
+ * @since 1.10.0
+ * @see ItemStack
+ * @see FluidIngredient
+ */
 public abstract class Ingredient implements Predicate<ItemStack> {
     private static ItemStack createEmptyOreDict(String oredict) {
         ItemStack stack = new ItemStack(Blocks.BARRIER, 1, 0);

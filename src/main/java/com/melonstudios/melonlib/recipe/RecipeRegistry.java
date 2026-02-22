@@ -1,12 +1,26 @@
 package com.melonstudios.melonlib.recipe;
 
 import com.melonstudios.melonlib.MelonLib;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles the registered recipe types.
+ * Recipe type registration should be done in the {@link FMLPreInitializationEvent} or the {@link FMLInitializationEvent}.
+ * That is because the recipes for the recipe types will be registered during the {@link FMLInterModComms.IMCEvent}
+ * or {@link FMLPostInitializationEvent}.
+ * @since 1.10.0
+ * @see IRecipeType
+ * @see ISyncedRecipeType
+ * @see IRecipeTypeClient
+ */
 @SuppressWarnings("unchecked")
 public class RecipeRegistry {
     static final Map<String, IRecipeType<?>> SERVER_RECIPE_TYPES = new HashMap<>();

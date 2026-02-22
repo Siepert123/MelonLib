@@ -91,6 +91,11 @@ public class ClientProxy extends AbstractProxy {
         MelonLib.net.sendTo(new PacketSendRecipes(), player);
     }
 
+    /**
+     * Checks if the passed in player is the same player as the current local client player
+     * (UUID-based, not object based; a serverside player with the same UUID as the local player returns true)
+     * @since 1.10.0
+     */
     @Override
     public boolean isPlayerLocal(EntityPlayer player) {
         EntityPlayer local = Minecraft.getMinecraft().player;

@@ -22,6 +22,11 @@ public abstract class AbstractProxy {
 
     public abstract <T, R extends ISyncedRecipeType<T>> void sendRecipes(EntityPlayerMP player, String typeID, R type) throws IOException;
 
+    /**
+     * Checks if the passed in player is the same player as the current local client player
+     * (UUID-based, not object based; a serverside player with the same UUID as the local player returns true)
+     * @since 1.10.0
+     */
     public boolean isPlayerLocal(EntityPlayer player) {
         return false;
     }

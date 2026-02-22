@@ -8,6 +8,13 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Universal Recipe is an object that can represent nearly all recipes that exist, have existed and will exist.
+ * The list-in-list structure of item and fluid I/O can be used to represent nearly every machine's I/O.
+ * Even if a recipe has some extra data which does not fall under items or fluids, the extraData NBT will allow
+ * additional parameters to be included.
+ * @since 1.10.0
+ */
 public class UniversalRecipe {
     public final String recipeType;
     public final String recipeID;

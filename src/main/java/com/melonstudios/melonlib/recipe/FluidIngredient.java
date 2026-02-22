@@ -13,6 +13,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * {@link FluidStack} equivalent of the {@link Ingredient}.
+ * Contains helper functions for serialization.
+ * @since 1.10.0
+ * @see FluidStack
+ * @see Ingredient
+ */
 public class FluidIngredient implements Predicate<FluidStack> {
     private final FluidStack wrapped;
     protected FluidIngredient(FluidStack wrapped) {

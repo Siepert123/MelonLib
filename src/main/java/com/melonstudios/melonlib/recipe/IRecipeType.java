@@ -5,6 +5,20 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * The IRecipeType is used to register any recipe type that can be accessed via MelonLoader's IMC.
+ * However, this recipe type class is only for the server-side.
+ * In the case that {@link #shouldSynchronize()} returns {@code true},
+ * MelonLib will send packets to the client to update the respective
+ * {@link IRecipeTypeClient} with the contents of this recipe type.
+ * Do note that for recipe synchronization to work, the type must be an instance of {@link ISyncedRecipeType},
+ * and both the {@link IRecipeType} and {@link IRecipeTypeClient} must be registered in the {@link RecipeRegistry}!
+ * @since 1.10.0
+ * @see RecipeRegistry
+ * @see ISyncedRecipeType
+ * @see IRecipeTypeClient
+ * @param <T> The recipe object type parameter
+ */
 @SuppressWarnings("unused")
 public interface IRecipeType<T> {
     /**

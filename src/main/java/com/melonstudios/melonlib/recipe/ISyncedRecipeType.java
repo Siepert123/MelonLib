@@ -4,6 +4,12 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+/**
+ * Synchronizable version of {@link IRecipeType}.
+ * @since 1.10.0
+ * @see IRecipeType
+ * @see IRecipeTypeClient
+ */
 public interface ISyncedRecipeType<T> extends IRecipeType<T> {
     /**
      * Determines whether MelonLib should synchronize this recipe type to the client.

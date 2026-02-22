@@ -1,5 +1,10 @@
 package com.melonstudios.melonlib.recipe;
 
+/**
+ * Thrown when something fails during recipe loading.
+ * @since 1.10.0
+ * @see UniversalRecipe
+ */
 public class RecipeException extends Exception {
     public RecipeException() {
         super();

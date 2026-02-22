@@ -8,6 +8,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Sends recipe data to the client.
+ * @since 1.10.0
+ */
 public class PacketSendRecipes implements IMessage {
     private ByteBuf buf;
     @Override

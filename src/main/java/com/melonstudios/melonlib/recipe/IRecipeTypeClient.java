@@ -8,6 +8,14 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Client-side version of {@link IRecipeType}. Will be updated when joining a world to match the {@link IRecipeType} of the server.
+ * @since 1.10.0
+ * @see RecipeRegistry
+ * @see ISyncedRecipeType
+ * @param <T> The recipe object type parameter
+ * @param <R> The recipe type parameter
+ */
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("unused")
 public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> {

@@ -2,16 +2,16 @@ package com.melonstudios.melonlib.recipe;
 
 import com.melonstudios.melonlib.MelonLib;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetHandlerPlayServer;
 
 import java.util.Map;
 
+/**
+ * Handles the synchronization of recipe types on a separate thread for performance.
+ */
 public class ThreadSynchronizeRecipes extends Thread {
     private final EntityPlayerMP player;
-    private final NetHandlerPlayServer connection;
     public ThreadSynchronizeRecipes(EntityPlayerMP player) {
         this.player = player;
-        this.connection = player.connection;
     }
 
     @Override
