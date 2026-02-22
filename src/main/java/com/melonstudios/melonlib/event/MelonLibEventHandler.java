@@ -6,10 +6,12 @@ import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.MetaBlock;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.misc.TileSyncFix;
+import com.melonstudios.melonlib.recipe.ThreadSynchronizeRecipes;
 import com.melonstudios.melonlib.sided.ClientPacketStaller;
 import com.melonstudios.melonlib.sided.ServerPacketStaller;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
@@ -19,6 +21,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -147,6 +150,14 @@ public class MelonLibEventHandler {
                 ServerPacketStaller.STALLS.clear();
             }
             TileSyncFix.getInstance().flush();
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) event.player;
+            new ThreadSynchronizeRecipes(player).start();
         }
     }
 }

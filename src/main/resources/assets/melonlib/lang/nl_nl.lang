@@ -2,3 +2,4 @@ tooltip.melonlib.blockdict_data_fail=*kon bloktags niet ophalen*
 tooltip.melonlib.blockdict_entries=Bloktags
 tooltip.melonlib.oredict_entries=Voorwerptags
 tooltip.melonlib.key_for_dict_entries=[%s] om tags weer te geven
+tooltip.melonlib.empty_oredict=Geen voorwerpen in tag %s

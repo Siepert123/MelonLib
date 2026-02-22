@@ -4,6 +4,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Utilities for Items.
@@ -55,5 +56,16 @@ public class StackUtil {
     }
     public static void spawnItemDefaultVelocity(World world, double x, double y, double z, ItemStack stack) {
         if (!stack.isEmpty()) world.spawnEntity(new EntityItem(world, x, y, z, stack));
+    }
+
+    public static boolean itemMatches(ItemStack example, ItemStack input) {
+        if (example.isEmpty() != input.isEmpty()) return false;
+        if (example.getItem() == input.getItem()) {
+            if (example.getItem().getHasSubtypes()) {
+                return (example.getMetadata() == input.getMetadata()) || (example.getMetadata() == OreDictionary.WILDCARD_VALUE);
+            }
+            return true;
+        }
+        return false;
     }
 }

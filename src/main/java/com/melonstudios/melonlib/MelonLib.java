@@ -3,14 +3,17 @@ package com.melonstudios.melonlib;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
+import com.melonstudios.melonlib.event.RegisterRecipesEvent;
 import com.melonstudios.melonlib.imc.IMCHandler;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
+import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.sided.AbstractProxy;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -49,6 +52,11 @@ public class MelonLib {
                 0, Side.SERVER
         );
         proxy.registerClientTESync(net);
+        net.registerMessage(
+                new PacketSendRecipes.Handler(),
+                PacketSendRecipes.class,
+                2, Side.CLIENT
+        );
     }
 
     @EventHandler
@@ -57,7 +65,7 @@ public class MelonLib {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-
+        MinecraftForge.EVENT_BUS.post(new RegisterRecipesEvent());
     }
 
     @EventHandler
