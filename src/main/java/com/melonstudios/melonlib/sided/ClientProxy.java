@@ -88,7 +88,7 @@ public class ClientProxy extends AbstractProxy {
             buf.writeCharSequence(recipeID, StandardCharsets.UTF_8);
             type.write(recipe, buf);
         }
-        MelonLib.net.sendTo(new PacketSendRecipes(), player);
+        MelonLib.net.sendTo(new PacketSendRecipes(buf), player);
     }
 
     /**
