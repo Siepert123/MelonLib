@@ -3,6 +3,7 @@ package com.melonstudios.melonlib;
 import com.melonstudios.melonlib.blockdict.BlockDictionary;
 import com.melonstudios.melonlib.command.CommandBlockDict;
 import com.melonstudios.melonlib.command.CommandOreDict;
+import com.melonstudios.melonlib.command.CommandRecipeTypes;
 import com.melonstudios.melonlib.event.RegisterRecipesEvent;
 import com.melonstudios.melonlib.imc.IMCHandler;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
@@ -85,6 +86,7 @@ public class MelonLib {
         if (event.getServer() != null) ServerHack.setServer(event.getServer());
         event.registerServerCommand(new CommandBlockDict());
         event.registerServerCommand(new CommandOreDict());
+        event.registerServerCommand(new CommandRecipeTypes());
     }
 
     @EventHandler

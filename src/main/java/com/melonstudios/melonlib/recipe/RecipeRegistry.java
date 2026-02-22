@@ -8,8 +8,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Handles the registered recipe types.
@@ -51,5 +53,9 @@ public class RecipeRegistry {
         T converted = type.convert(recipe);
         type.addRecipe(recipeID, converted);
         MelonLib.logger.debug("{} added recipe {} to recipe type {}", sender, recipeID, typeID);
+    }
+
+    public static Set<String> allRegisteredRecipeTypes() {
+        return Collections.unmodifiableSet(SERVER_RECIPE_TYPES.keySet());
     }
 }
