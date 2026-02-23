@@ -39,7 +39,9 @@ public interface IRecipeType<T> {
      * @param recipeID The ID of the recipe. If another recipe with the same ID already exists, it should be replaced.
      * @param recipe The recipe to add.
      */
-    void addRecipe(@Nonnull String recipeID, @Nonnull T recipe);
+    default void addRecipe(@Nonnull String recipeID, @Nonnull T recipe) {
+        this.getRecipeMap().put(recipeID, recipe);
+    }
 
     /**
      * Retrieves a recipe from the recipe type with the associated recipe ID.
@@ -47,19 +49,25 @@ public interface IRecipeType<T> {
      * @return The recipe associated with the recipe ID, or null if no recipe with that ID exists.
      */
     @Nullable
-    T getRecipe(@Nonnull String recipeID);
+    default T getRecipe(@Nonnull String recipeID) {
+        return this.getRecipeMap().get(recipeID);
+    }
 
     /** Checks if a recipe with a certain recipe ID exists.
      * @param recipeID The ID of the recipe to check for.
      * @return True if the recipe is in this recipe type, false otherwise.
      */
-    boolean hasRecipe(@Nonnull String recipeID);
+    default boolean hasRecipe(@Nonnull String recipeID) {
+        return this.getRecipeMap().containsKey(recipeID);
+    }
 
     /**
      * Removed a recipe with a certain recipe ID. If the recipe didn't exist in the first place, nothing happens.
      * @param recipeID The ID of the recipe to remove.
      */
-    void removeRecipe(@Nonnull String recipeID);
+    default void removeRecipe(@Nonnull String recipeID) {
+        this.getRecipeMap().remove(recipeID);
+    }
 
     /**
      * Retrieves all recipe IDs currently in the recipe type.
@@ -67,7 +75,9 @@ public interface IRecipeType<T> {
      * @return All currently registered recipe IDs.
      */
     @Nonnull
-    Collection<String> getAllRecipeIDs();
+    default Collection<String> getAllRecipeIDs() {
+        return this.getRecipeMap().keySet();
+    }
 
     /**
      * Retrieves all recipes currently in the recipe type.
@@ -75,7 +85,9 @@ public interface IRecipeType<T> {
      * @return All currently registered recipes.
      */
     @Nonnull
-    Collection<T> getAllRecipes();
+    default Collection<T> getAllRecipes() {
+        return this.getRecipeMap().values();
+    }
 
     @Nonnull
     Map<String, T> getRecipeMap();

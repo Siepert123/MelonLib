@@ -87,6 +87,7 @@ public class MelonLib {
         event.registerServerCommand(new CommandBlockDict());
         event.registerServerCommand(new CommandOreDict());
         event.registerServerCommand(new CommandRecipeTypes());
+        proxy.registerCommandRecipeTypesClient(event);
     }
 
     @EventHandler

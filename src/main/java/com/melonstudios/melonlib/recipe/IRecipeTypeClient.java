@@ -25,12 +25,16 @@ public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> {
      * @return The recipe associated with the recipe ID, or null if no recipe with that ID exists.
      */
     @Nullable
-    T getRecipe(@Nonnull String recipeID);
+    default T getRecipe(@Nonnull String recipeID) {
+        return this.getRecipeMap().get(recipeID);
+    }
     /** Checks if a recipe with a certain recipe ID exists.
      * @param recipeID The ID of the recipe to check for.
      * @return True if the recipe is in this recipe type, false otherwise.
      */
-    boolean hasRecipe(@Nonnull String recipeID);
+    default boolean hasRecipe(@Nonnull String recipeID) {
+        return this.getRecipeMap().containsKey(recipeID);
+    }
 
     /**
      * Retrieves all recipe IDs currently in the recipe type.
@@ -38,14 +42,18 @@ public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> {
      * @return All currently registered recipe IDs.
      */
     @Nonnull
-    Collection<String> getAllRecipeIDs();
+    default Collection<String> getAllRecipeIDs() {
+        return this.getRecipeMap().keySet();
+    }
     /**
      * Retrieves all recipes currently in the recipe type.
      * The returned collection should not be modified; it may break things, or it could be immutable and throw an exception.
      * @return All currently registered recipes.
      */
     @Nonnull
-    Collection<T> getAllRecipes();
+    default Collection<T> getAllRecipes() {
+        return this.getRecipeMap().values();
+    }
 
     @Nonnull
     Map<String, T> getRecipeMap();
@@ -55,15 +63,21 @@ public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> {
      * Prepares for incoming recipe data; should clear all data.
      * Basically resets the client recipe type to be completely empty.
      */
-    void prepareForData();
+    default void prepareForData() {
+        this.getRecipeMap().clear();
+    }
     /**
      * Adds all recipes from the local recipe type.
      * Should make the client recipe type a near 1:1 copy of the server recipe type.
      */
-    void addFromLocal(@Nonnull R local);
+    default void addFromLocal(@Nonnull R local) {
+        this.getRecipeMap().putAll(local.getRecipeMap());
+    }
     /**
      * Adds a recipe from the remote server recipe type.
      * Used when recipes are sent over the network.
      */
-    void addFromRemote(@Nonnull String recipeID, @Nonnull T recipe);
+    default void addFromRemote(@Nonnull String recipeID, @Nonnull T recipe) {
+        this.getRecipeMap().put(recipeID, recipe);
+    }
 }

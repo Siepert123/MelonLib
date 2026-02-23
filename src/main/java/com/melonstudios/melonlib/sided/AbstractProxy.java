@@ -5,6 +5,7 @@ import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -32,4 +33,8 @@ public abstract class AbstractProxy {
     }
 
     public <T, R extends ISyncedRecipeType<T>> void receiveRecipes(String typeID, int amount, ByteBuf buf) {}
+
+    public void registerCommandRecipeTypesClient(FMLServerStartingEvent event) {
+
+    }
 }

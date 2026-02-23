@@ -1,6 +1,7 @@
 package com.melonstudios.melonlib.sided;
 
 import com.melonstudios.melonlib.MelonLib;
+import com.melonstudios.melonlib.command.CommandRecipeTypesClient;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.recipe.IRecipeType;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -125,5 +127,10 @@ public class ClientProxy extends AbstractProxy {
         } catch (Throwable e) {
             throw new RuntimeException("Exception loading in recipes of type " + typeID, e);
         }
+    }
+
+    @Override
+    public void registerCommandRecipeTypesClient(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandRecipeTypesClient());
     }
 }
