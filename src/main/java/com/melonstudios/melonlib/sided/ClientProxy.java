@@ -4,10 +4,7 @@ import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.command.CommandRecipeTypesClient;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
-import com.melonstudios.melonlib.recipe.IRecipeType;
-import com.melonstudios.melonlib.recipe.IRecipeTypeClient;
-import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
-import com.melonstudios.melonlib.recipe.RecipeRegistry;
+import com.melonstudios.melonlib.recipe.*;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -132,5 +129,11 @@ public class ClientProxy extends AbstractProxy {
     @Override
     public void registerCommandRecipeTypesClient(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandRecipeTypesClient());
+    }
+
+    @Override
+    public <T> IRecipeAccessor<T> getRecipeAccessor(String id) {
+        IRecipeTypeClient<T, ?> client = RecipeRegistry.getRecipeTypeClient(id);
+        return client != null ? client : RecipeRegistry.getRecipeType(id);
     }
 }

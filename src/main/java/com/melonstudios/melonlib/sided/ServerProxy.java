@@ -3,8 +3,10 @@ package com.melonstudios.melonlib.sided;
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.recipe.IRecipeAccessor;
 import com.melonstudios.melonlib.recipe.IRecipeType;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
+import com.melonstudios.melonlib.recipe.RecipeRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,5 +49,10 @@ public class ServerProxy extends AbstractProxy {
             type.write(recipe, buf);
         }
         MelonLib.net.sendTo(new PacketSendRecipes(buf), player);
+    }
+
+    @Override
+    public <T> IRecipeAccessor<T> getRecipeAccessor(String id) {
+        return RecipeRegistry.getRecipeType(id);
     }
 }

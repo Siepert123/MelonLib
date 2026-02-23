@@ -20,7 +20,7 @@ import java.util.Map;
  * @param <T> The recipe object type parameter
  */
 @SuppressWarnings("unused")
-public interface IRecipeType<T> {
+public interface IRecipeType<T> extends IRecipeAccessor<T> {
     /**
      * Determines whether MelonLib should synchronize this recipe type to the client.
      * When it returns true, the class will be cast to {@link ISyncedRecipeType}!!!

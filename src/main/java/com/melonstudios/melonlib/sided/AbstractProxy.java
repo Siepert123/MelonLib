@@ -1,6 +1,7 @@
 package com.melonstudios.melonlib.sided;
 
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.recipe.IRecipeAccessor;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,4 +38,6 @@ public abstract class AbstractProxy {
     public void registerCommandRecipeTypesClient(FMLServerStartingEvent event) {
 
     }
+
+    public abstract <T> IRecipeAccessor<T> getRecipeAccessor(String id);
 }

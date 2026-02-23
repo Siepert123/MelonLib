@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("unused")
-public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> {
+public interface IRecipeTypeClient<T, R extends ISyncedRecipeType<T>> extends IRecipeAccessor<T> {
     /**
      * Retrieves a recipe from the recipe type with the associated recipe ID.
      * @param recipeID The ID of the recipe. If no recipe with the same ID exists, return null.
