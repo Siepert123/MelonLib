@@ -4,7 +4,6 @@ import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.recipe.IRecipeAccessor;
-import com.melonstudios.melonlib.recipe.IRecipeType;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
 import com.melonstudios.melonlib.recipe.RecipeRegistry;
 import io.netty.buffer.ByteBuf;
