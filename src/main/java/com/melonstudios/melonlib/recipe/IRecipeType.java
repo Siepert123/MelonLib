@@ -36,6 +36,7 @@ public interface IRecipeType<T> extends IRecipeAccessor<T> {
 
     /**
      * Adds a new recipe to this recipe type.
+     * It's absolutely CRUCIAL that recipes are added AFTER item registration, or things WILL break!!
      * @param recipeID The ID of the recipe. If another recipe with the same ID already exists, it should be replaced.
      * @param recipe The recipe to add.
      */

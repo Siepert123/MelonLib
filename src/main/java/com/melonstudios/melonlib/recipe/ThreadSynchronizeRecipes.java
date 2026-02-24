@@ -3,6 +3,7 @@ package com.melonstudios.melonlib.recipe;
 import com.melonstudios.melonlib.MelonLib;
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Map;
 public class ThreadSynchronizeRecipes extends Thread {
     private final EntityPlayerMP player;
     public ThreadSynchronizeRecipes(EntityPlayerMP player) {
+        super("ThreadSynchronizeRecipes-" + player.getName());
         this.player = player;
     }
 
@@ -28,8 +30,8 @@ public class ThreadSynchronizeRecipes extends Thread {
                     MelonLib.proxy.sendRecipes(this.player, typeID, synced);
                 }
             }
-        } catch (Throwable e) {
-            MelonLib.logger.error("Exception in sending recipes to {}: {}", this.player.getName(), e.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

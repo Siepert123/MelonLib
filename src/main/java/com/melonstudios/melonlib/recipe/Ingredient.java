@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -129,7 +130,7 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         @Override
         public NBTTagCompound serialize(NBTTagCompound nbt) {
             nbt.setString("type", "ItemBased");
-            nbt.setString("item", ForgeRegistries.ITEMS.getKey(this.example.getItem()).toString());
+            nbt.setString("item", this.example.getItem().getRegistryName().toString());
             nbt.setInteger("damage", this.example.getItemDamage());
             return nbt;
         }
@@ -138,10 +139,9 @@ public abstract class Ingredient implements Predicate<ItemStack> {
             return new ItemBased(StackUtil.readItemStack(buf, false, false));
         }
         private static ItemBased deserialize(NBTTagCompound nbt) {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("item")));
+            ResourceLocation id = new ResourceLocation(nbt.getString("item"));
             int damage = nbt.getInteger("damage");
-            Objects.requireNonNull(item, "Deserialized null item");
-            return new ItemBased(new ItemStack(item, 1, damage));
+            return new ItemBased(new ItemStack(ForgeRegistries.ITEMS.getValue(id), 1, damage));
         }
     }
     private static class ItemBasedNBT extends ItemBased {
@@ -163,7 +163,7 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         @Override
         public NBTTagCompound serialize(NBTTagCompound nbt) {
             nbt.setString("type", "ItemBasedNBT");
-            nbt.setString("item", ForgeRegistries.ITEMS.getKey(this.example.getItem()).toString());
+            nbt.setString("item", this.example.getItem().getRegistryName().toString());
             nbt.setInteger("damage", this.example.getItemDamage());
             NBTTagCompound itemNBT = this.example.getTagCompound();
             if (itemNBT != null) nbt.setTag("itemNBT", itemNBT);
@@ -174,11 +174,10 @@ public abstract class Ingredient implements Predicate<ItemStack> {
             return new ItemBasedNBT(StackUtil.readItemStack(buf, false, true));
         }
         private static ItemBasedNBT deserialize(NBTTagCompound nbt) {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("item")));
+            ResourceLocation id = new ResourceLocation(nbt.getString("item"));
             int damage = nbt.getInteger("damage");
-            Objects.requireNonNull(item, "Deserialized null item");
             NBTTagCompound itemNBT = nbt.hasKey("itemNBT", 10) ? nbt.getCompoundTag("itemNBT") : null;
-            return new ItemBasedNBT(new ItemStack(item, 1, damage, itemNBT));
+            return new ItemBasedNBT(new ItemStack(ForgeRegistries.ITEMS.getValue(id), 1, damage, itemNBT));
         }
     }
     private static class OreDictBased extends Ingredient {

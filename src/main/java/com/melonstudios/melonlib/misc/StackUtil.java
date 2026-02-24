@@ -82,14 +82,7 @@ public class StackUtil {
         Item item = stack.getItem();
         int count = stack.getCount();
         int damage = stack.getItemDamage();
-        boolean useID = item.getRegistryName().getResourceDomain().equals("minecraft");
-        buf.writeBoolean(useID);
-        if (useID) buf.writeInt(Item.getIdFromItem(item));
-        else {
-            String itemID = String.valueOf(item.getRegistryName());
-            buf.writeInt(itemID.length());
-            buf.writeCharSequence(itemID, StandardCharsets.UTF_8);
-        }
+        buf.writeInt(Item.getIdFromItem(item));
         if (withSize) buf.writeByte(count);;
         buf.writeShort(damage);
         if (withNBT) {
@@ -104,21 +97,13 @@ public class StackUtil {
     }
 
     public static ItemStack readItemStack(ByteBuf buf, boolean withSize, boolean withNBT) throws IOException {
-        boolean useID = buf.readBoolean();
-        Item item = useID ? Item.getItemById(buf.readInt()) : ForgeRegistries.ITEMS.getValue(readRL(buf));
+        Item item = Item.getItemById(buf.readInt());
         int count = withSize ? buf.readUnsignedByte() : 1;
         int damage = buf.readUnsignedShort();
-        assert item != null;
         if (withNBT) {
             boolean hasNBT = buf.readBoolean();
             if (hasNBT) return new ItemStack(item, count, damage, new PacketBuffer(buf).readCompoundTag());
         }
         return new ItemStack(item, count, damage);
-    }
-
-    private static ResourceLocation readRL(ByteBuf buf) {
-        int len = buf.readInt();
-        String unparsed = buf.readCharSequence(len, StandardCharsets.UTF_8).toString();
-        return new ResourceLocation(unparsed);
     }
 }
