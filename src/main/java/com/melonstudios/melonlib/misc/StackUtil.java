@@ -1,10 +1,19 @@
 package com.melonstudios.melonlib.misc;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities for Items.
@@ -67,5 +76,49 @@ public class StackUtil {
             return true;
         }
         return false;
+    }
+
+    public static void writeItemStack(ItemStack stack, ByteBuf buf, boolean withSize, boolean withNBT) {
+        Item item = stack.getItem();
+        int count = stack.getCount();
+        int damage = stack.getItemDamage();
+        boolean useID = item.getRegistryName().getResourceDomain().equals("minecraft");
+        buf.writeBoolean(useID);
+        if (useID) buf.writeInt(Item.getIdFromItem(item));
+        else {
+            String itemID = String.valueOf(item.getRegistryName());
+            buf.writeInt(itemID.length());
+            buf.writeCharSequence(itemID, StandardCharsets.UTF_8);
+        }
+        if (withSize) buf.writeByte(count);;
+        buf.writeShort(damage);
+        if (withNBT) {
+            NBTTagCompound itemNBT = stack.getTagCompound();
+            if (itemNBT != null) {
+                buf.writeBoolean(true);
+                new PacketBuffer(buf).writeCompoundTag(itemNBT);
+            } else {
+                buf.writeBoolean(false);
+            }
+        }
+    }
+
+    public static ItemStack readItemStack(ByteBuf buf, boolean withSize, boolean withNBT) throws IOException {
+        boolean useID = buf.readBoolean();
+        Item item = useID ? Item.getItemById(buf.readInt()) : ForgeRegistries.ITEMS.getValue(readRL(buf));
+        int count = withSize ? buf.readUnsignedByte() : 1;
+        int damage = buf.readUnsignedShort();
+        assert item != null;
+        if (withNBT) {
+            boolean hasNBT = buf.readBoolean();
+            if (hasNBT) return new ItemStack(item, count, damage, new PacketBuffer(buf).readCompoundTag());
+        }
+        return new ItemStack(item, count, damage);
+    }
+
+    private static ResourceLocation readRL(ByteBuf buf) {
+        int len = buf.readInt();
+        String unparsed = buf.readCharSequence(len, StandardCharsets.UTF_8).toString();
+        return new ResourceLocation(unparsed);
     }
 }

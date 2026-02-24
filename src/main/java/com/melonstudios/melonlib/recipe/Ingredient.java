@@ -4,6 +4,7 @@ import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.StackUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,6 +50,9 @@ public abstract class Ingredient implements Predicate<ItemStack> {
     public abstract List<ItemStack> getDisplayItems();
     public int getAmount() {
         return 1;
+    }
+    public String getDisplayName() {
+        return "[invalid ingredient]";
     }
 
     public void serialize(ByteBuf buf) {
@@ -111,12 +115,15 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         public List<ItemStack> getDisplayItems() {
             return Collections.singletonList(this.example);
         }
+        @Override
+        public String getDisplayName() {
+            return this.example.getDisplayName();
+        }
 
         @Override
         public void serialize(ByteBuf buf) {
             buf.writeByte(0);
-            buf.writeInt(Item.getIdFromItem(this.example.getItem()));
-            buf.writeShort(this.example.getItemDamage());
+            StackUtil.writeItemStack(this.example, buf, false, false);
         }
 
         @Override
@@ -127,10 +134,8 @@ public abstract class Ingredient implements Predicate<ItemStack> {
             return nbt;
         }
 
-        private static ItemBased deserialize(ByteBuf buf) {
-            Item item = Item.getItemById(buf.readInt());
-            int damage = buf.readUnsignedShort();
-            return new ItemBased(new ItemStack(item, 1, damage));
+        private static ItemBased deserialize(ByteBuf buf) throws IOException {
+            return new ItemBased(StackUtil.readItemStack(buf, false, false));
         }
         private static ItemBased deserialize(NBTTagCompound nbt) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("item")));
@@ -152,15 +157,7 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         @Override
         public void serialize(ByteBuf buf) {
             buf.writeByte(1);
-            buf.writeInt(Item.getIdFromItem(this.example.getItem()));
-            buf.writeShort(this.example.getItemDamage());
-            NBTTagCompound itemNBT = this.example.getTagCompound();
-            if (itemNBT != null) {
-                buf.writeByte(1);
-                new PacketBuffer(buf).writeCompoundTag(itemNBT);
-            } else {
-                buf.writeByte(0);
-            }
+            StackUtil.writeItemStack(this.example, buf, false, true);
         }
 
         @Override
@@ -174,11 +171,7 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         }
 
         private static ItemBasedNBT deserialize(ByteBuf buf) throws IOException {
-            Item item = Item.getItemById(buf.readInt());
-            int damage = buf.readUnsignedShort();
-            boolean hasNBT = buf.readByte() != 0;
-            NBTTagCompound nbt = hasNBT ? new PacketBuffer(buf).readCompoundTag() : null;
-            return new ItemBasedNBT(new ItemStack(item, 1, damage, nbt));
+            return new ItemBasedNBT(StackUtil.readItemStack(buf, false, true));
         }
         private static ItemBasedNBT deserialize(NBTTagCompound nbt) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("item")));
@@ -196,6 +189,7 @@ public abstract class Ingredient implements Predicate<ItemStack> {
 
         @Override
         public boolean matches(ItemStack stack) {
+            if (stack.isEmpty()) return false;
             int oreID = OreDictionary.getOreID(this.oredict);
             for (int ore : OreDictionary.getOreIDs(stack)) {
                 if (ore == oreID) return true;
@@ -204,9 +198,17 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         }
         @Override
         public List<ItemStack> getDisplayItems() {
-            if (OreDictionary.doesOreNameExist(this.oredict)) {
-                return Collections.unmodifiableList(OreDictionary.getOres(this.oredict));
+            List<ItemStack> ores = OreDictionary.getOres(this.oredict, false);
+            if (!ores.isEmpty()) {
+                return Collections.unmodifiableList(ores);
             } else return Collections.singletonList(Ingredient.createEmptyOreDict(this.oredict));
+        }
+        @Override
+        public String getDisplayName() {
+            List<ItemStack> ores = OreDictionary.getOres(this.oredict, false);
+            if (!ores.isEmpty()) {
+                return ores.get((int)((System.currentTimeMillis() / 1000) % ores.size())).getDisplayName();
+            } else return "[Empty OreDict: " + this.oredict + "]";
         }
 
         @Override
@@ -246,6 +248,10 @@ public abstract class Ingredient implements Predicate<ItemStack> {
         @Override
         public List<ItemStack> getDisplayItems() {
             return Collections.emptyList();
+        }
+        @Override
+        public String getDisplayName() {
+            return Localizer.translate(Items.AIR.getUnlocalizedName());
         }
 
         @Override

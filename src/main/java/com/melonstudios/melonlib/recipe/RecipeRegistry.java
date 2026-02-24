@@ -23,7 +23,7 @@ import java.util.Set;
  * @see ISyncedRecipeType
  * @see IRecipeTypeClient
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public class RecipeRegistry {
     static final Map<String, IRecipeType<?>> SERVER_RECIPE_TYPES = new HashMap<>();
     @SideOnly(Side.CLIENT)
@@ -57,5 +57,9 @@ public class RecipeRegistry {
 
     public static Set<String> allRegisteredRecipeTypes() {
         return Collections.unmodifiableSet(SERVER_RECIPE_TYPES.keySet());
+    }
+
+    public static <T> IRecipeAccessor<T> getRecipeAccessor(String id) {
+        return MelonLib.proxy.getRecipeAccessor(id);
     }
 }
