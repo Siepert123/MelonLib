@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.command;
 
+import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.FileUtil;
 import com.melonstudios.melonlib.recipe.RecipeRegistry;
 import mcp.MethodsReturnNonnullByDefault;
@@ -35,6 +36,8 @@ public class CommandRecipeTypesClient extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if (MelonLib.proxy.getSide() != Side.CLIENT) throw new WrongUsageException("Command only available on local singleplayer");
+
         if (args.length == 0) throw new WrongUsageException("/recipe_types <list|get|all>");
 
         File commandOutputTxt = FileUtil.downloadsFile("recipeTypesClientCommandOutput.txt");

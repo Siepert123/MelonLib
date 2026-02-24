@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.command;
 
+import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.FileUtil;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandBase;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -33,6 +35,8 @@ public class CommandOreDict extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if (MelonLib.proxy.getSide() != Side.CLIENT) throw new WrongUsageException("Command only available on local singleplayer");
+
         if (args.length == 0) throw new WrongUsageException("/oredict <list|get>");
 
         File oreDictCommandOutputTxt = FileUtil.downloadsFile("oreDictCommandOutput.txt");
