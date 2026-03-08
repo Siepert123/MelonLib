@@ -30,7 +30,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         return this.matches(fluidStack);
     }
     public boolean matches(FluidStack stack) {
-        return this.wrapped.containsFluid(stack);
+        return stack != null && stack.containsFluid(this.wrapped);
     }
 
     public List<FluidStack> getDisplayFluids() {
