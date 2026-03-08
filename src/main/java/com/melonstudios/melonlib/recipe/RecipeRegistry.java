@@ -26,15 +26,13 @@ import java.util.Set;
 @SuppressWarnings({"unchecked", "unused"})
 public class RecipeRegistry {
     static final Map<String, IRecipeType<?>> SERVER_RECIPE_TYPES = new HashMap<>();
-    @SideOnly(Side.CLIENT)
-    static final Map<String, IRecipeTypeClient<?, ?>> CLIENT_RECIPE_TYPES = new HashMap<>();
 
     public static void registerServer(String id, IRecipeType<?> type) {
         SERVER_RECIPE_TYPES.put(id, type);
     }
     @SideOnly(Side.CLIENT)
     public static void registerClient(String id, IRecipeTypeClient<?, ?> type) {
-        CLIENT_RECIPE_TYPES.put(id, type);
+        RecipeRegistryClient.CLIENT_RECIPE_TYPES.put(id, type);
     }
 
     public static <T> IRecipeType<T> getRecipeType(String id) {
@@ -42,7 +40,7 @@ public class RecipeRegistry {
     }
     @SideOnly(Side.CLIENT)
     public static <T, R extends ISyncedRecipeType<T>> IRecipeTypeClient<T, R> getRecipeTypeClient(String id) {
-        return (IRecipeTypeClient<T, R>) CLIENT_RECIPE_TYPES.get(id);
+        return (IRecipeTypeClient<T, R>) RecipeRegistryClient.CLIENT_RECIPE_TYPES.get(id);
     }
 
     public static <T> void processUniversalRecipe(String sender, UniversalRecipe recipe) throws RecipeException {
