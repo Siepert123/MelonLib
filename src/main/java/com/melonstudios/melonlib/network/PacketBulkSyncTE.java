@@ -33,7 +33,7 @@ public class PacketBulkSyncTE implements IMessage {
         this.positions = new ArrayList<>(len);
         for (int i = 0; i < len; i++) this.positions.add(BlockPos.fromLong(buf.readLong()));
         this.size = buf.readInt();
-        this.data.readBytes(buf, 0, this.size);
+        this.data.writeBytes(buf, 0, this.size);
         this.readable = true;
     }
 
@@ -42,7 +42,7 @@ public class PacketBulkSyncTE implements IMessage {
         buf.writeShort(this.positions.size());
         for (BlockPos pos : this.positions) buf.writeLong(pos.toLong());
         buf.writeInt(this.size);
-        buf.writeBytes(this.data, 0, this.size);
+        buf.readBytes(this.data, 0, this.size);
     }
 
     public PacketBulkSyncTE(List<ISyncedTE> tiles) throws IOException {

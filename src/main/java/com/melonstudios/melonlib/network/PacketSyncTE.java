@@ -27,7 +27,7 @@ public class PacketSyncTE implements IMessage {
     public void fromBytes(ByteBuf buf) {
         this.pos = BlockPos.fromLong(buf.readLong());
         this.size = buf.readInt();
-        this.data.readBytes(buf, 0, this.size);
+        this.data.writeBytes(buf, 0, this.size);
         this.readable = true;
     }
 
@@ -35,7 +35,7 @@ public class PacketSyncTE implements IMessage {
     public void toBytes(ByteBuf buf) {
         buf.writeLong(this.pos.toLong());
         buf.writeInt(this.size);
-        buf.writeBytes(this.data, 0, this.size);
+        buf.readBytes(this.data, 0, this.size);
     }
 
     public PacketSyncTE(ISyncedTE te, BlockPos pos) throws IOException {
