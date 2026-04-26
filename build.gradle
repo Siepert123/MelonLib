@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'org.joml:joml:1.10.8'
     }
 }
         
@@ -44,8 +45,19 @@ minecraft {
     }
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
+
+    embed('org.joml:joml:1.10.8') {
+
+    }
+
+    compile 'org.joml:joml:1.10.8' // adds joml to the dev env
 }
 
 jar {
@@ -59,6 +71,12 @@ jar {
             "Implementation-Vendor" :"examplemodsareus",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
+    }
+
+    from {
+        configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'LICENSE.txt', 'META-INF/MANIFSET.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
     }
 
     manifest.attributes(
