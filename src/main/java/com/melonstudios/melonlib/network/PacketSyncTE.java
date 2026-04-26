@@ -46,7 +46,7 @@ public class PacketSyncTE implements IMessage {
         this.data = tracked.internal();
         this.size = tracked.written();
     }
-    public PacketSyncTE(ISyncedTE te) {
+    public PacketSyncTE(ISyncedTE te) throws IOException {
         this(te, te.self_ISyncedTE().getPos());
     }
     public PacketSyncTE() {

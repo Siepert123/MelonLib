@@ -76,7 +76,11 @@ public class TileSyncFix {
                 for (Set<ISyncedTE> syncedTEs : this.tileEntitiesQueue.values()) {
                     for (ISyncedTE te : syncedTEs) {
                         if (te.self_ISyncedTE().isInvalid()) continue;
-                        MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                        try {
+                            MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                        } catch (Throwable e) {
+                            throw new RuntimeException("Exception synchronizing TE", e);
+                        }
                     }
                     syncedTEs.clear();
                 }
