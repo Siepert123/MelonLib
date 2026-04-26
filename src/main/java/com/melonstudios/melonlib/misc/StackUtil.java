@@ -1,6 +1,8 @@
 package com.melonstudios.melonlib.misc;
 
+import com.melonstudios.melonlib.network.TrackedByteBuf;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -87,6 +89,26 @@ public class StackUtil {
             if (itemNBT != null) {
                 buf.writeBoolean(true);
                 new PacketBuffer(buf).writeCompoundTag(itemNBT);
+            } else {
+                buf.writeBoolean(false);
+            }
+        }
+    }
+
+    public static void writeItemStack(ItemStack stack, TrackedByteBuf buf, boolean withSize, boolean withNBT) {
+        Item item = stack.getItem();
+        int count = stack.getCount();
+        int damage = stack.getItemDamage();
+        buf.writeInt(Item.getIdFromItem(item));
+        if (withSize) buf.writeByte(count);;
+        buf.writeShort(damage);
+        if (withNBT) {
+            NBTTagCompound itemNBT = stack.getTagCompound();
+            if (itemNBT != null) {
+                buf.writeBoolean(true);
+                ByteBuf temp = Unpooled.buffer();
+                new PacketBuffer(temp).writeCompoundTag(itemNBT);
+                buf.writeBytes(temp);
             } else {
                 buf.writeBoolean(false);
             }
