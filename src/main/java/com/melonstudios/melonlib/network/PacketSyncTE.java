@@ -4,15 +4,10 @@ import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import java.io.IOException;
 
 /**
  * A packet for synchronizing some {@link ISyncedTE} data. Revised in 1.7 and 1.11

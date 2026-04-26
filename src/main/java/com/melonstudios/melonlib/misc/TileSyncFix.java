@@ -7,7 +7,6 @@ import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -31,6 +30,10 @@ public class TileSyncFix {
         Set<ISyncedTE> set = this.tileEntitiesQueue.computeIfAbsent(tile.getWorld(), k -> new HashSet<>());
         set.add(te);
     }
+
+    /**
+     * Flushes all tile entities to be synced to all tracking players.
+     */
     public void flush() {
         synchronized (this.tileEntitiesQueue) {
             if (MelonLibConfig.bulkSendTileEntities) {

@@ -14,7 +14,6 @@ import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.sided.AbstractProxy;
-import com.melonstudios.melonlib.sided.SidedExecution;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

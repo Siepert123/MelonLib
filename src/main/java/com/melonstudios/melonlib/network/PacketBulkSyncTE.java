@@ -6,15 +6,20 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * A packet for synchronizing bundled {@link ISyncedTE} data.
+ * @since 1.11
+ * @see ISyncedTE
+ * @see PacketSyncTE
+ * @see PacketRequestSyncTE
+ */
 public class PacketBulkSyncTE implements IMessage {
     public List<BlockPos> positions;
     public int size;
