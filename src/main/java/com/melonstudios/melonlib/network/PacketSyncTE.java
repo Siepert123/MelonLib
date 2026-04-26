@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import java.io.IOException;
+
 /**
  * A packet for synchronizing some {@link ISyncedTE} data. Revised in 1.7 and 1.11
  * @since 1.4
@@ -36,7 +38,7 @@ public class PacketSyncTE implements IMessage {
         buf.writeBytes(this.data, 0, this.size);
     }
 
-    public PacketSyncTE(ISyncedTE te, BlockPos pos) {
+    public PacketSyncTE(ISyncedTE te, BlockPos pos) throws IOException {
         this();
         this.pos = pos;
         TrackedByteBuf tracked = new TrackedByteBuf(this.data);

@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import java.io.IOException;
+
 /**
  * Interface for any TileEntity that makes synchronizing some NBT data really easy.
  * @since 1.4
@@ -46,8 +48,8 @@ public interface ISyncedTE {
         return true;
     }
 
-    void writePacket(TrackedByteBuf buf);
-    void readPacket(ByteBuf buf);
+    void writePacket(TrackedByteBuf buf) throws IOException;
+    void readPacket(ByteBuf buf) throws IOException;
 
     /**
      * Sends synchronization packet to tracking players.

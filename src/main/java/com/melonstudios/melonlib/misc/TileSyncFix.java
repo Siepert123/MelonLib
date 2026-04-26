@@ -48,20 +48,27 @@ public class TileSyncFix {
                         tiles.computeIfAbsent(pos, k -> new ArrayList<>()).add(te);
                     }
                     for (Long2ObjectMap.Entry<List<ISyncedTE>> synchronizable : tiles.long2ObjectEntrySet()) {
-                        List<ISyncedTE> list = synchronizable.getValue();
-                        if (list.isEmpty()) {
-                            // ???
-                        } else if (list.size() == 1) {
-                            MelonLib.net.sendToAllTracking(new PacketSyncTE(list.get(0)), list.get(0).getTargetPoint());
-                        } else {
+                        try {
+                            List<ISyncedTE> list = synchronizable.getValue();
+                            if (list.isEmpty()) {
+                                // ???
+                            } else if (list.size() == 1) {
+                                MelonLib.net.sendToAllTracking(new PacketSyncTE(list.get(0)), list.get(0).getTargetPoint());
+                            } else {
+                                long chunk = synchronizable.getLongKey();
+                                double x = ((int) (chunk) << 4) + 8.0;
+                                double z = ((int) (chunk >> 32) << 4) + 8.0;
+                                double y = 64.0;
+                                MelonLib.net.sendToAllTracking(
+                                        new PacketBulkSyncTE(list),
+                                        new NetworkRegistry.TargetPoint(dimension, x, y, z, 64.0)
+                                );
+                            }
+                        } catch (Throwable e) {
                             long chunk = synchronizable.getLongKey();
-                            double x = (int) (chunk << 4) + 8.0;
-                            double z = (int) (chunk << 4) + 8.0;
-                            double y = 64.0;
-                            MelonLib.net.sendToAllTracking(
-                                    new PacketBulkSyncTE(list),
-                                    new NetworkRegistry.TargetPoint(dimension, x, y, z, 64.0)
-                            );
+                            int x = (int) chunk;
+                            int z = (int) (chunk >> 32);
+                            throw new RuntimeException("Exception bulk synchronizing TEs in chunk " + x + "," + z, e);
                         }
                     }
                 }

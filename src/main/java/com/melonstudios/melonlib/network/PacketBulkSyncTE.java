@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class PacketBulkSyncTE implements IMessage {
         buf.writeBytes(this.data, 0, this.size);
     }
 
-    public PacketBulkSyncTE(List<ISyncedTE> tiles) {
+    public PacketBulkSyncTE(List<ISyncedTE> tiles) throws IOException {
         this();
         this.positions = new ArrayList<>(tiles.size());
         TrackedByteBuf tracked = new TrackedByteBuf(this.data);

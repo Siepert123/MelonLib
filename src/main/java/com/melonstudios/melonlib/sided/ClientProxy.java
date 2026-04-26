@@ -62,7 +62,11 @@ public class ClientProxy extends AbstractProxy {
             if (world.isBlockLoaded(packet.pos)) {
                 TileEntity te = world.getTileEntity(packet.pos);
                 if (te instanceof ISyncedTE) {
-                    ((ISyncedTE)te).readPacket(packet.data);
+                    try {
+                        ((ISyncedTE) te).readPacket(packet.data);
+                    } catch (Throwable e) {
+                        throw new RuntimeException("Exception synchronizing tile data", e);
+                    }
                 } else if (te == null) {
                     retry = true;
                 }
@@ -89,7 +93,11 @@ public class ClientProxy extends AbstractProxy {
                 if (world.isBlockLoaded(pos)) {
                     TileEntity te = world.getTileEntity(pos);
                     if (te instanceof ISyncedTE) {
-                        ((ISyncedTE)te).readPacket(packet.data);
+                        try {
+                            ((ISyncedTE) te).readPacket(packet.data);
+                        } catch (Throwable e) {
+                            throw new RuntimeException("Exception synchronizing tile data", e);
+                        }
                     }
                 }
             }

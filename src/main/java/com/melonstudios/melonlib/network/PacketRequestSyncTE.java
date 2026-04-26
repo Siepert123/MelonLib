@@ -46,7 +46,11 @@ public class PacketRequestSyncTE implements IMessage {
             World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
             TileEntity te = world.getTileEntity(message.pos);
             if (te instanceof ISyncedTE) {
-                return new PacketSyncTE((ISyncedTE) te, message.pos);
+                try {
+                    return new PacketSyncTE((ISyncedTE) te, message.pos);
+                } catch (Throwable e) {
+                    throw new RuntimeException("Failed to reply to packet", e);
+                }
             } else if (te == null) {
                 //ServerPacketStaller.add(new ServerPacketStaller.Stall(message, this, ctx));
                 MelonLib.logger.warn("No tile entity at {}, skipping", message.pos);
