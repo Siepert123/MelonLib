@@ -1,6 +1,8 @@
 package com.melonstudios.melonlib.recipe;
 
+import com.melonstudios.melonlib.network.TrackedByteBuf;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,6 +53,23 @@ public class FluidIngredient implements Predicate<FluidStack> {
         if (tag != null) {
             buf.writeBoolean(true);
             new PacketBuffer(buf).writeCompoundTag(tag);
+        } else {
+            buf.writeBoolean(false);
+        }
+    }
+    public void serialize(TrackedByteBuf buf) {
+        String id = FluidRegistry.getFluidName(this.wrapped);
+        int amount = this.wrapped.amount;
+        NBTTagCompound tag = this.wrapped.tag;
+        buf.writeInt(id.length());
+        buf.internal().writeCharSequence(id, StandardCharsets.UTF_8);
+        buf.append(id.length());
+        buf.writeInt(amount);
+        if (tag != null) {
+            buf.writeBoolean(true);
+            ByteBuf temp = Unpooled.buffer();
+            new PacketBuffer(temp).writeCompoundTag(tag);
+            buf.writeBytes(temp);
         } else {
             buf.writeBoolean(false);
         }

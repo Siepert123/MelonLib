@@ -2,6 +2,7 @@ package com.melonstudios.melonlib.recipe;
 
 import com.melonstudios.melonlib.misc.Localizer;
 import com.melonstudios.melonlib.misc.StackUtil;
+import com.melonstudios.melonlib.network.TrackedByteBuf;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -54,6 +55,9 @@ public abstract class Ingredient implements Predicate<ItemStack> {
     }
 
     public void serialize(ByteBuf buf) {
+        throw new UnsupportedOperationException("This Ingredient does not support serialization");
+    }
+    public void serialize(TrackedByteBuf buf) {
         throw new UnsupportedOperationException("This Ingredient does not support serialization");
     }
     public NBTTagCompound serialize(NBTTagCompound nbt) {
@@ -123,6 +127,11 @@ public abstract class Ingredient implements Predicate<ItemStack> {
             buf.writeByte(0);
             StackUtil.writeItemStack(this.example, buf, false, false);
         }
+        @Override
+        public void serialize(TrackedByteBuf buf) {
+            buf.writeByte(0);
+            StackUtil.writeItemStack(this.example, buf, false, false);
+        }
 
         @Override
         public NBTTagCompound serialize(NBTTagCompound nbt) {
@@ -153,6 +162,11 @@ public abstract class Ingredient implements Predicate<ItemStack> {
 
         @Override
         public void serialize(ByteBuf buf) {
+            buf.writeByte(1);
+            StackUtil.writeItemStack(this.example, buf, false, true);
+        }
+        @Override
+        public void serialize(TrackedByteBuf buf) {
             buf.writeByte(1);
             StackUtil.writeItemStack(this.example, buf, false, true);
         }
@@ -213,6 +227,13 @@ public abstract class Ingredient implements Predicate<ItemStack> {
             buf.writeInt(this.oredict.length());
             buf.writeCharSequence(this.oredict, StandardCharsets.UTF_8);
         }
+        @Override
+        public void serialize(TrackedByteBuf buf) {
+            buf.writeByte(2);
+            buf.writeInt(this.oredict.length());
+            buf.internal().writeCharSequence(this.oredict, StandardCharsets.UTF_8);
+            buf.append(this.oredict.length());
+        }
 
         @Override
         public NBTTagCompound serialize(NBTTagCompound nbt) {
@@ -252,6 +273,10 @@ public abstract class Ingredient implements Predicate<ItemStack> {
 
         @Override
         public void serialize(ByteBuf buf) {
+            buf.writeByte(3);
+        }
+        @Override
+        public void serialize(TrackedByteBuf buf) {
             buf.writeByte(3);
         }
 
