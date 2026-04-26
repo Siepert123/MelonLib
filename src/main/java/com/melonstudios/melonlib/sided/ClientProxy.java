@@ -2,6 +2,7 @@ package com.melonstudios.melonlib.sided;
 
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.command.CommandRecipeTypesClient;
+import com.melonstudios.melonlib.network.PacketBulkSyncTE;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.recipe.IRecipeAccessor;
@@ -15,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -50,7 +52,11 @@ public class ClientProxy extends AbstractProxy {
     public void packetSyncTE(PacketSyncTE packet, IMessageHandler<PacketSyncTE, IMessage> handler, MessageContext ctx) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.addScheduledTask(() -> {
-            while (mc.world == null || !packet.readable) {}
+            if (mc.world == null || !packet.readable) {
+                MelonLib.logger.debug("Received tile entity packet before it was ready");
+                while (mc.world == null || !packet.readable) {
+                }
+            }
             World world = mc.world;
             boolean retry = false;
             if (world.isBlockLoaded(packet.pos)) {
@@ -64,7 +70,28 @@ public class ClientProxy extends AbstractProxy {
             if (retry) {
                 //MelonLib.logger.warn("No tile entity at {}, retrying", packet.pos);
                 //ClientPacketStaller.add(new ClientPacketStaller.Stall(packet, handler, ctx));
-                MelonLib.logger.warn("No tile entity at {}, skipping", packet.pos);
+                //MelonLib.logger.warn("No tile entity at {}, skipping", packet.pos);
+            }
+        });
+    }
+
+    @Override
+    public void packetBulkSyncTE(PacketBulkSyncTE packet, IMessageHandler<PacketBulkSyncTE, IMessage> handler, MessageContext ctx) {
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.addScheduledTask(() -> {
+            if (mc.world == null || !packet.readable) {
+                MelonLib.logger.debug("Received bundled tile entity packet before it was ready");
+                while (mc.world == null || !packet.readable) {
+                }
+            }
+            World world = mc.world;
+            for (BlockPos pos : packet.positions) {
+                if (world.isBlockLoaded(pos)) {
+                    TileEntity te = world.getTileEntity(pos);
+                    if (te instanceof ISyncedTE) {
+                        ((ISyncedTE)te).readPacket(packet.data);
+                    }
+                }
             }
         });
     }
