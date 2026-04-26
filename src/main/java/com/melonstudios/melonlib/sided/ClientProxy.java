@@ -50,12 +50,13 @@ public class ClientProxy extends AbstractProxy {
     public void packetSyncTE(PacketSyncTE packet, IMessageHandler<PacketSyncTE, IMessage> handler, MessageContext ctx) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.addScheduledTask(() -> {
+            while (mc.world == null || !packet.readable) {}
             World world = mc.world;
             boolean retry = false;
             if (world.isBlockLoaded(packet.pos)) {
                 TileEntity te = world.getTileEntity(packet.pos);
                 if (te instanceof ISyncedTE) {
-                    ((ISyncedTE)te).readPacket(packet.nbt);
+                    ((ISyncedTE)te).readPacket(packet.data);
                 } else if (te == null) {
                     retry = true;
                 }

@@ -9,9 +9,12 @@ import com.melonstudios.melonlib.imc.IMCHandler;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.misc.TileSyncFix;
+import com.melonstudios.melonlib.network.PacketBulkSyncTE;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
+import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.sided.AbstractProxy;
+import com.melonstudios.melonlib.sided.SidedExecution;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 public class MelonLib {
     public static final String MODID = "melonlib";
     public static final String NAME = "MelonLib";
-    public static final String VERSION = "1.10.1";
+    public static final String VERSION = "1.11.0";
 
     public static Logger logger;
     public static SimpleNetworkWrapper net;
@@ -52,11 +55,20 @@ public class MelonLib {
                 PacketRequestSyncTE.class,
                 0, Side.SERVER
         );
-        proxy.registerClientTESync(net);
+        net.registerMessage(
+                new PacketSyncTE.Handler(),
+                PacketSyncTE.class,
+                1, Side.CLIENT
+        );
         net.registerMessage(
                 new PacketSendRecipes.Handler(),
                 PacketSendRecipes.class,
                 2, Side.CLIENT
+        );
+        net.registerMessage(
+                new PacketBulkSyncTE.Handler(),
+                PacketBulkSyncTE.class,
+                3, Side.CLIENT
         );
     }
 

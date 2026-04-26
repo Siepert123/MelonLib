@@ -4,6 +4,8 @@ import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.network.TrackedByteBuf;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -22,20 +24,30 @@ public interface ISyncedTE {
      * Write some data to NBT for sending in a packet.
      * @return Data to synchronize as NBT
      */
-    NBTTagCompound writePacket();
+    @Deprecated
+    default NBTTagCompound writePacket() {
+        return new NBTTagCompound();
+    }
 
     /**
      * Read the NBT data from an incoming sync packet.
      * @param nbt The NBT received via synchronization packet
      */
-    void readPacket(NBTTagCompound nbt);
+    @Deprecated
+    default void readPacket(NBTTagCompound nbt) {};
 
     /**
      * Influences whether the NBT data is compressed before being sent over the network.
      * Decreases network impact, increases time before packet can be sent and read.
      * @return Whether to GZIP the NBT data in the packet.
      */
-    boolean compressPacketNBT();
+    @Deprecated
+    default boolean compressPacketNBT() {
+        return true;
+    }
+
+    void writePacket(TrackedByteBuf buf);
+    void readPacket(ByteBuf buf);
 
     /**
      * Sends synchronization packet to tracking players.
@@ -53,6 +65,7 @@ public interface ISyncedTE {
         MelonLib.net.sendToServer(new PacketRequestSyncTE(this));
     }
 
+    @Deprecated
     default double synchronizationRange() {
         return 64.0;
     }
@@ -62,7 +75,7 @@ public interface ISyncedTE {
                 te.getPos().getX() + 0.5,
                 te.getPos().getY() + 0.5,
                 te.getPos().getZ() + 0.5,
-                this.synchronizationRange());
+                64.0);
     }
 
 }

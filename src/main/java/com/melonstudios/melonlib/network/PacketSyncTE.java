@@ -3,9 +3,11 @@ package com.melonstudios.melonlib.network;
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -13,47 +15,45 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.io.IOException;
 
 /**
- * A packet for synchronizing some {@link ISyncedTE} data. Revised in 1.7
+ * A packet for synchronizing some {@link ISyncedTE} data. Revised in 1.7 and 1.11
  * @since 1.4
  * @see ISyncedTE
  * @see PacketRequestSyncTE
  */
 public class PacketSyncTE implements IMessage {
-
-    public boolean compressedNBT;
     public BlockPos pos;
-    public NBTTagCompound nbt;
+    public int size;
+    public ByteBuf data;
+    public boolean readable = false;
+
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.compressedNBT = buf.readBoolean();
         this.pos = BlockPos.fromLong(buf.readLong());
-        try {
-            this.nbt = new PacketBuffer(buf).readCompoundTag();
-        } catch (IOException e) {
-            if (this.nbt == null) this.nbt = new NBTTagCompound();
-            MelonLib.logger.error("help!!", e);
-        }
+        this.size = buf.readInt();
+        this.data.readBytes(buf, 0, this.size);
+        this.readable = true;
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeBoolean(this.compressedNBT);
         buf.writeLong(this.pos.toLong());
-        new PacketBuffer(buf).writeCompoundTag(this.nbt);
+        buf.writeInt(this.size);
+        buf.writeBytes(this.data, 0, this.size);
     }
 
     public PacketSyncTE(ISyncedTE te, BlockPos pos) {
-        this.compressedNBT = te.compressPacketNBT();
+        this();
         this.pos = pos;
-        this.nbt = te.writePacket();
+        TrackedByteBuf tracked = new TrackedByteBuf(this.data);
+        te.writePacket(tracked);
+        this.data = tracked.internal();
+        this.size = tracked.written();
     }
     public PacketSyncTE(ISyncedTE te) {
-        this.compressedNBT = te.compressPacketNBT();
-        this.pos = te.self_ISyncedTE().getPos();
-        this.nbt = te.writePacket();
+        this(te, te.self_ISyncedTE().getPos());
     }
     public PacketSyncTE() {
-
+        this.data = Unpooled.buffer();
     }
 
     public static class Handler implements IMessageHandler<PacketSyncTE, IMessage> {

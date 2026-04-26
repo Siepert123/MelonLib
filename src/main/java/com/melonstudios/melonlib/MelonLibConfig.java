@@ -9,4 +9,6 @@ public class MelonLibConfig {
     public static boolean disableDictEntryTooltip = false;
     @Config.Comment("The key to display the dict entries tooltip\n(LSHIFT is " + Keyboard.KEY_LSHIFT + ", LCONTROL is " + Keyboard.KEY_LCONTROL + ")")
     public static int keyForDictEntriesTooltip = Keyboard.KEY_LSHIFT;
+    @Config.Comment("Pack multiple small tile entity updates into one packet")
+    public static boolean bulkSendTileEntities = false;
 }

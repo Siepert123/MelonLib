@@ -1,6 +1,7 @@
 package com.melonstudios.melonlib.misc;
 
 import com.melonstudios.melonlib.MelonLib;
+import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import net.minecraft.tileentity.TileEntity;
@@ -30,9 +31,13 @@ public class TileSyncFix {
     public void flush() {
         synchronized (this.tileEntitiesQueue) {
             for (Set<ISyncedTE> syncedTEs : this.tileEntitiesQueue.values()) {
-                for (ISyncedTE te : syncedTEs) {
-                    if (te.self_ISyncedTE().isInvalid()) continue;
-                    MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                if (MelonLibConfig.bulkSendTileEntities) {
+
+                } else {
+                    for (ISyncedTE te : syncedTEs) {
+                        if (te.self_ISyncedTE().isInvalid()) continue;
+                        MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                    }
                 }
                 syncedTEs.clear();
             }

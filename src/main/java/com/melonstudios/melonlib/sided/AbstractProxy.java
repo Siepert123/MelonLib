@@ -1,5 +1,6 @@
 package com.melonstudios.melonlib.sided;
 
+import com.melonstudios.melonlib.network.PacketBulkSyncTE;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.recipe.IRecipeAccessor;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
@@ -19,6 +20,9 @@ public abstract class AbstractProxy {
     public abstract Side getSide();
     public abstract void registerClientTESync(SimpleNetworkWrapper net);
     public void packetSyncTE(PacketSyncTE packet, IMessageHandler<PacketSyncTE, IMessage> handler, MessageContext ctx) {
+
+    }
+    public void packetBulkSyncTE(PacketBulkSyncTE packet, IMessageHandler<PacketBulkSyncTE, IMessage> handler, MessageContext ctx) {
 
     }
 
