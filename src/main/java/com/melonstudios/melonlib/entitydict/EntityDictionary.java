@@ -23,6 +23,7 @@ public class EntityDictionary {
 
     public static void register(Class<? extends Entity> entity, String name) {
         if ("Unknown".equals(name)) return;
+        if (Entity.class.isAssignableFrom(entity)) throw new RuntimeException("Not an entity class: " + entity.getName());
 
         entityToNames.computeIfAbsent(entity, k -> NonNullList.create()).add(name);
         nameToEntities.computeIfAbsent(name, k -> NonNullList.create()).add(entity);
@@ -30,6 +31,13 @@ public class EntityDictionary {
     }
     public static void register(Class<? extends Entity> entity, String... names) {
         for (String name : names) register(entity, name);
+    }
+    @SuppressWarnings("unchecked")
+    public static void register(String entity, String name) {
+        try {
+            Class<? extends Entity> clazz = (Class<? extends Entity>) Class.forName(entity);
+            register(clazz, name);
+        } catch (Throwable ignored) {}
     }
 
     public static NonNullList<Class<? extends Entity>> getTaggedEntities(String name) {
