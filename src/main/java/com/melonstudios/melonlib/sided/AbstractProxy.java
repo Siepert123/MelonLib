@@ -7,6 +7,7 @@ import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
+import java.util.List;
 
 public abstract class AbstractProxy {
     public abstract Side getSide();
@@ -23,6 +25,13 @@ public abstract class AbstractProxy {
 
     }
     public void packetBulkSyncTE(PacketBulkSyncTE packet, IMessageHandler<PacketBulkSyncTE, IMessage> handler, MessageContext ctx) {
+
+    }
+
+    public void packetSyncTE(BlockPos pos, ByteBuf data) {
+
+    }
+    public void packetBulkSyncTE(List<BlockPos> positions, ByteBuf data) {
 
     }
 

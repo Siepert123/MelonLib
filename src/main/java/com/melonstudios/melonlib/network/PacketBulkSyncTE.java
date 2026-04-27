@@ -33,8 +33,7 @@ public class PacketBulkSyncTE implements IMessage {
         this.positions = new ArrayList<>(len);
         for (int i = 0; i < len; i++) this.positions.add(BlockPos.fromLong(buf.readLong()));
         this.size = buf.readInt();
-        this.data.writeBytes(buf, 0, this.size);
-        this.readable = true;
+        MelonLib.proxy.packetBulkSyncTE(this.positions, buf);
     }
 
     @Override
@@ -42,7 +41,8 @@ public class PacketBulkSyncTE implements IMessage {
         buf.writeShort(this.positions.size());
         for (BlockPos pos : this.positions) buf.writeLong(pos.toLong());
         buf.writeInt(this.size);
-        buf.readBytes(this.data, 0, this.size);
+        this.data.readerIndex(0);
+        buf.writeBytes(this.data, 0, this.size);
     }
 
     public PacketBulkSyncTE(List<ISyncedTE> tiles) throws IOException {
@@ -64,7 +64,7 @@ public class PacketBulkSyncTE implements IMessage {
     public static class Handler implements IMessageHandler<PacketBulkSyncTE, IMessage> {
         @Override
         public IMessage onMessage(PacketBulkSyncTE message, MessageContext ctx) {
-            MelonLib.proxy.packetBulkSyncTE(message, this, ctx);
+            //MelonLib.proxy.packetBulkSyncTE(message, this, ctx);
             return null;
         }
     }

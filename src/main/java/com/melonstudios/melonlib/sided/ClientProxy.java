@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -80,6 +81,22 @@ public class ClientProxy extends AbstractProxy {
     }
 
     @Override
+    public void packetSyncTE(BlockPos pos, ByteBuf data) {
+        Minecraft mc = Minecraft.getMinecraft();
+        World world = mc.world;
+        if (world.isBlockLoaded(pos)) {
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof ISyncedTE) {
+                try {
+                    ((ISyncedTE) te).readPacket(data);
+                } catch (Throwable e) {
+                    throw new RuntimeException("Exception synchronizing tile data", e);
+                }
+            }
+        }
+    }
+
+    @Override
     public void packetBulkSyncTE(PacketBulkSyncTE packet, IMessageHandler<PacketBulkSyncTE, IMessage> handler, MessageContext ctx) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.addScheduledTask(() -> {
@@ -102,6 +119,24 @@ public class ClientProxy extends AbstractProxy {
                 }
             }
         });
+    }
+
+    @Override
+    public void packetBulkSyncTE(List<BlockPos> positions, ByteBuf data) {
+        Minecraft mc = Minecraft.getMinecraft();
+        World world = mc.world;
+        for (BlockPos pos : positions) {
+            if (world.isBlockLoaded(pos)) {
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof ISyncedTE) {
+                    try {
+                        ((ISyncedTE) te).readPacket(data);
+                    } catch (Throwable e) {
+                        throw new RuntimeException("Exception synchronizing tile data", e);
+                    }
+                }
+            }
+        }
     }
 
     @Override

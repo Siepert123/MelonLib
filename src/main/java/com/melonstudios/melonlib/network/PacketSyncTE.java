@@ -27,15 +27,14 @@ public class PacketSyncTE implements IMessage {
     public void fromBytes(ByteBuf buf) {
         this.pos = BlockPos.fromLong(buf.readLong());
         this.size = buf.readInt();
-        this.data.writeBytes(buf, 0, this.size);
-        this.readable = true;
+        MelonLib.proxy.packetSyncTE(this.pos, buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeLong(this.pos.toLong());
         buf.writeInt(this.size);
-        buf.readBytes(this.data, 0, this.size);
+        buf.writeBytes(this.data, 0, this.size);
     }
 
     public PacketSyncTE(ISyncedTE te, BlockPos pos) throws IOException {
@@ -56,7 +55,7 @@ public class PacketSyncTE implements IMessage {
     public static class Handler implements IMessageHandler<PacketSyncTE, IMessage> {
         @Override
         public IMessage onMessage(PacketSyncTE message, MessageContext ctx) {
-            MelonLib.proxy.packetSyncTE(message, this, ctx);
+            //MelonLib.proxy.packetSyncTE(message, this, ctx);
             return null;
         }
     }
