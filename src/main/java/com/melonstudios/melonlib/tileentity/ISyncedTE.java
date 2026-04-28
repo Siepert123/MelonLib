@@ -18,7 +18,7 @@ import java.io.IOException;
  * @see PacketSyncTE
  */
 public interface ISyncedTE {
-    boolean ENABLE_SYNC_REQUESTS = false;
+    boolean ENABLE_SYNC_REQUESTS = true;
 
     default TileEntity self_ISyncedTE() {
         return (TileEntity) this;

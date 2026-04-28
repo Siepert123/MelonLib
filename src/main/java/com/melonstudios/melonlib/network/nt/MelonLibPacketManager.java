@@ -60,7 +60,8 @@ public final class MelonLibPacketManager {
                     //event.setReply(reply);
                 }
             } catch (Throwable e) {
-                throw new RuntimeException("Exception on packet of ID #" + Byte.toUnsignedInt(type), e);
+                MelonLib.logger.error("Exception on clientbound packet of ID #{}", Byte.toUnsignedInt(type));
+                throw new RuntimeException("Exception on clientbound packet of ID #" + Byte.toUnsignedInt(type), e);
             }
         }
     }
@@ -78,10 +79,11 @@ public final class MelonLibPacketManager {
                 EntityPlayerMP player = ((NetHandlerPlayServer) event.getHandler()).player;
                 FMLProxyPacket reply = handler.handle(data, player);
                 if (reply != null) {
-                    sendTo(packet, player);
+                    sendTo(reply, player);
                     //event.setReply(reply);
                 }
             } catch (Throwable e) {
+                MelonLib.logger.error("Exception on serverbound packet of ID #{}", Byte.toUnsignedInt(type));
                 throw new RuntimeException("Exception on serverbound packet of ID #" + Byte.toUnsignedInt(type), e);
             }
         }
