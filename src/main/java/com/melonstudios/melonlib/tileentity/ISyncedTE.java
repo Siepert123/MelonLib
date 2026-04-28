@@ -5,6 +5,9 @@ import com.melonstudios.melonlib.misc.TileSyncFix;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.network.TrackedByteBuf;
+import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
+import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
+import com.melonstudios.melonlib.network.nt.MelonLibSPackets;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +21,8 @@ import java.io.IOException;
  * @see PacketSyncTE
  */
 public interface ISyncedTE {
+    boolean ENABLE_SYNC_REQUESTS = false;
+
     default TileEntity self_ISyncedTE() {
         return (TileEntity) this;
     }
@@ -64,7 +69,8 @@ public interface ISyncedTE {
      * Call this function on the client (preferably in {@link TileEntity#onLoad()}) to request a synchronization.
      */
     default void requestSync() {
-        MelonLib.net.sendToServer(new PacketRequestSyncTE(this));
+        //MelonLib.net.sendToServer(new PacketRequestSyncTE(this));
+        if (ENABLE_SYNC_REQUESTS) MelonLibPacketManager.sendToServer(MelonLibSPackets.REQUEST_SYNC_TE.create(this));
     }
 
     @Deprecated

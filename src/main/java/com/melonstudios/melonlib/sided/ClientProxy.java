@@ -5,6 +5,8 @@ import com.melonstudios.melonlib.command.CommandRecipeTypesClient;
 import com.melonstudios.melonlib.network.PacketBulkSyncTE;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
+import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.recipe.IRecipeAccessor;
 import com.melonstudios.melonlib.recipe.IRecipeTypeClient;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
@@ -160,7 +162,7 @@ public class ClientProxy extends AbstractProxy {
             buf.writeCharSequence(recipeID, StandardCharsets.UTF_8);
             type.write(recipe, buf);
         }
-        MelonLib.net.sendTo(new PacketSendRecipes(buf), player);
+        MelonLibPacketManager.sendTo(MelonLibCPackets.SEND_RECIPES.create(buf), player);
     }
 
     /**

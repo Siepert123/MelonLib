@@ -17,6 +17,7 @@ import java.io.IOException;
  * @see ISyncedTE
  * @see PacketRequestSyncTE
  */
+@Deprecated
 public class PacketSyncTE implements IMessage {
     public BlockPos pos;
     public int size;

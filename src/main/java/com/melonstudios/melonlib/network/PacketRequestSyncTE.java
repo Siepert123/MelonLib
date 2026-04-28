@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  * @see ISyncedTE
  * @see PacketSyncTE
  */
+@Deprecated
 public class PacketRequestSyncTE implements IMessage {
     private BlockPos pos;
     private int dimension;

@@ -2,8 +2,8 @@ package com.melonstudios.melonlib.misc;
 
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.MelonLibConfig;
-import com.melonstudios.melonlib.network.PacketBulkSyncTE;
-import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
+import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import java.util.*;
 
@@ -53,14 +54,22 @@ public class TileSyncFix {
                             if (list.isEmpty()) {
                                 // ???
                             } else if (list.size() == 1) {
-                                MelonLib.net.sendToAllTracking(new PacketSyncTE(list.get(0)), list.get(0).getTargetPoint());
+                                //MelonLib.net.sendToAllTracking(new PacketSyncTE(list.get(0)), list.get(0).getTargetPoint());
+                                MelonLibPacketManager.sendToAllTracking(
+                                        MelonLibCPackets.SYNC_TE.create(list.get(0)),
+                                        list.get(0).getTargetPoint()
+                                );
                             } else {
                                 long chunk = synchronizable.getLongKey();
                                 double x = ((int) (chunk) << 4) + 8.0;
                                 double z = ((int) (chunk >> 32) << 4) + 8.0;
                                 double y = 64.0;
-                                MelonLib.net.sendToAllTracking(
-                                        new PacketBulkSyncTE(list),
+                                //MelonLib.net.sendToAllTracking(
+                                //        new PacketBulkSyncTE(list),
+                                //        new NetworkRegistry.TargetPoint(dimension, x, y, z, 64.0)
+                                //);
+                                MelonLibPacketManager.sendToAllTracking(
+                                        MelonLibCPackets.BULK_SYNC_TE.create(list),
                                         new NetworkRegistry.TargetPoint(dimension, x, y, z, 64.0)
                                 );
                             }
@@ -77,7 +86,11 @@ public class TileSyncFix {
                     for (ISyncedTE te : syncedTEs) {
                         if (te.self_ISyncedTE().isInvalid()) continue;
                         try {
-                            MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                            //MelonLib.net.sendToAllTracking(new PacketSyncTE(te), te.getTargetPoint());
+                            MelonLibPacketManager.sendToAllTracking(
+                                    MelonLibCPackets.SYNC_TE.create(te),
+                                    te.getTargetPoint()
+                            );
                         } catch (Throwable e) {
                             throw new RuntimeException("Exception synchronizing TE", e);
                         }

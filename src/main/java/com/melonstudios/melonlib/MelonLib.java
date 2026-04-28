@@ -13,6 +13,7 @@ import com.melonstudios.melonlib.network.PacketBulkSyncTE;
 import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.sided.AbstractProxy;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,7 @@ public class MelonLib {
     public static final String VERSION = "1.11.3";
 
     public static Logger logger;
+    @Deprecated
     public static SimpleNetworkWrapper net;
 
     @SidedProxy(
@@ -47,7 +49,8 @@ public class MelonLib {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         OreDictionary.registerOre("doorIron", new ItemStack(Items.IRON_DOOR, 1, 0));
-        net = NetworkRegistry.INSTANCE.newSimpleChannel("melonlib");
+        /*
+        net = NetworkRegistry.INSTANCE.newSimpleChannel("melonlib_old");
 
         net.registerMessage(
                 new PacketRequestSyncTE.Handler(),
@@ -69,6 +72,10 @@ public class MelonLib {
                 PacketBulkSyncTE.class,
                 3, Side.CLIENT
         );
+        */
+
+        MelonLibPacketManager.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MelonLibPacketManager.CHANNEL);
+        MelonLibPacketManager.bus.register(new MelonLibPacketManager());
     }
 
     @EventHandler

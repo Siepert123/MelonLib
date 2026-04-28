@@ -21,6 +21,7 @@ import java.util.List;
  * @see PacketSyncTE
  * @see PacketRequestSyncTE
  */
+@Deprecated
 public class PacketBulkSyncTE implements IMessage {
     public List<BlockPos> positions;
     public int size;

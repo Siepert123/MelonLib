@@ -3,6 +3,8 @@ package com.melonstudios.melonlib.sided;
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
+import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
+import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.recipe.IRecipeAccessor;
 import com.melonstudios.melonlib.recipe.ISyncedRecipeType;
 import com.melonstudios.melonlib.recipe.RecipeRegistry;
@@ -47,7 +49,7 @@ public class ServerProxy extends AbstractProxy {
             buf.writeCharSequence(recipeID, StandardCharsets.UTF_8);
             type.write(recipe, buf);
         }
-        MelonLib.net.sendTo(new PacketSendRecipes(buf), player);
+        MelonLibPacketManager.sendTo(MelonLibCPackets.SEND_RECIPES.create(buf), player);
     }
 
     @Override
