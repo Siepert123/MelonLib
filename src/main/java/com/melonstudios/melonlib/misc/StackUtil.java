@@ -2,6 +2,7 @@ package com.melonstudios.melonlib.misc;
 
 import com.melonstudios.melonlib.network.TrackedByteBuf;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -10,9 +11,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities for Items.
@@ -124,5 +130,53 @@ public class StackUtil {
             if (hasNBT) return new ItemStack(item, count, damage, new PacketBuffer(buf).readCompoundTag());
         }
         return new ItemStack(item, count, damage);
+    }
+
+    public static void writeFluidStack(FluidStack stack, ByteBuf buf, boolean withNBT) {
+        String id = FluidRegistry.getFluidName(stack);
+        int amount = stack.amount;
+        NBTTagCompound tag = stack.tag;
+        if (amount > 0) {
+            buf.writeInt(amount);
+            buf.writeInt(id.length());
+            buf.writeCharSequence(id, StandardCharsets.UTF_8);
+            if (withNBT) {
+                if (tag != null) {
+                    buf.writeBoolean(true);
+                    ByteBufUtils.writeTag(buf, tag);
+                } else buf.writeBoolean(false);
+            }
+        } else buf.writeInt(0);
+    }
+    public static void writeFluidStack(FluidStack stack, TrackedByteBuf buf, boolean withNBT) {
+        String id = FluidRegistry.getFluidName(stack);
+        int amount = stack.amount;
+        NBTTagCompound tag = stack.tag;
+        if (amount > 0) {
+            buf.writeInt(amount);
+            buf.writeInt(id.length());
+            buf.internal().writeCharSequence(id, StandardCharsets.UTF_8);
+            buf.append(id.length());
+            if (withNBT) {
+                if (tag != null && tag.getSize() > 0) {
+                    buf.writeBoolean(true);
+                    ByteBuf temp = Unpooled.buffer();
+                    ByteBufUtils.writeTag(temp, tag);
+                    buf.writeBytes(temp);
+                } else buf.writeBoolean(false);
+            }
+        } else buf.writeInt(0);
+    }
+    @Nullable
+    public static FluidStack readFluidStack(ByteBuf buf, boolean withNBT) {
+        int amount = buf.readInt();
+        if (amount > 0) {
+            int len = buf.readInt();
+            String id = buf.readCharSequence(len, StandardCharsets.UTF_8).toString();
+            if (withNBT && buf.readBoolean()) {
+                NBTTagCompound tag = ByteBufUtils.readTag(buf);
+                return new FluidStack(FluidRegistry.getFluid(id), amount, tag);
+            } else return new FluidStack(FluidRegistry.getFluid(id), amount);
+        } else return null;
     }
 }
