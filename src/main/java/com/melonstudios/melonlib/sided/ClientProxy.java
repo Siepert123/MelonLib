@@ -3,7 +3,6 @@ package com.melonstudios.melonlib.sided;
 import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.command.CommandRecipeTypesClient;
 import com.melonstudios.melonlib.network.PacketBulkSyncTE;
-import com.melonstudios.melonlib.network.PacketSendRecipes;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
 import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;

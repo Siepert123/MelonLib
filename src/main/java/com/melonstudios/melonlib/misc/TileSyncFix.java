@@ -1,6 +1,5 @@
 package com.melonstudios.melonlib.misc;
 
-import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.MelonLibConfig;
 import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
 import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
@@ -11,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import java.util.*;
 

@@ -9,10 +9,6 @@ import com.melonstudios.melonlib.imc.IMCHandler;
 import com.melonstudios.melonlib.misc.AdvancementUtil;
 import com.melonstudios.melonlib.misc.ServerHack;
 import com.melonstudios.melonlib.misc.TileSyncFix;
-import com.melonstudios.melonlib.network.PacketBulkSyncTE;
-import com.melonstudios.melonlib.network.PacketRequestSyncTE;
-import com.melonstudios.melonlib.network.PacketSendRecipes;
-import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.sided.AbstractProxy;
 import net.minecraft.init.Items;
@@ -24,7 +20,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
 

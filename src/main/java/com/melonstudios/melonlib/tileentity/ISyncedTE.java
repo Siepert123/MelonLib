@@ -1,11 +1,8 @@
 package com.melonstudios.melonlib.tileentity;
 
-import com.melonstudios.melonlib.MelonLib;
 import com.melonstudios.melonlib.misc.TileSyncFix;
-import com.melonstudios.melonlib.network.PacketRequestSyncTE;
 import com.melonstudios.melonlib.network.PacketSyncTE;
 import com.melonstudios.melonlib.network.TrackedByteBuf;
-import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
 import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.network.nt.MelonLibSPackets;
 import io.netty.buffer.ByteBuf;
@@ -16,7 +13,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import java.io.IOException;
 
 /**
- * Interface for any TileEntity that makes synchronizing some NBT data really easy.
+ * Interface for any TileEntity that makes synchronizing some NBT data really easy. Revised in 1.11.3
  * @since 1.4
  * @see PacketSyncTE
  */
