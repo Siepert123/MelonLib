@@ -4,7 +4,7 @@ import com.melonstudios.melonlib.network.nt.MelonLibCPackets;
 import com.melonstudios.melonlib.network.nt.MelonLibPacketManager;
 import com.melonstudios.melonlib.network.nt.SPacketBase;
 import com.melonstudios.melonlib.tileentity.ISyncedTE;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public final class SPacketRequestSyncTE extends SPacketBase {
     @Nullable
     @Override
-    public FMLProxyPacket handle(PacketBuffer data, EntityPlayer player) throws IOException {
+    public FMLProxyPacket handle(PacketBuffer data, EntityPlayerMP player) throws IOException {
         BlockPos pos = data.readBlockPos();
         World world = player.world;
 

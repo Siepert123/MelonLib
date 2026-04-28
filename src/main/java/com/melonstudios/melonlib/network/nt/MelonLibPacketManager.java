@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
@@ -55,7 +56,10 @@ public final class MelonLibPacketManager {
         } else {
             try {
                 FMLProxyPacket reply = handler.handle(data);
-                if (reply != null) event.setReply(reply);
+                if (reply != null) {
+                    sendToServer(reply);
+                    //event.setReply(reply);
+                }
             } catch (Throwable e) {
                 throw new RuntimeException("Exception on packet of ID #" + Byte.toUnsignedInt(type), e);
             }
@@ -72,8 +76,12 @@ public final class MelonLibPacketManager {
             MelonLib.logger.error("Received unknown serverbound packet of ID #{}");
         } else {
             try {
-                FMLProxyPacket reply = handler.handle(data, ((NetHandlerPlayServer) event.getHandler()).player);
-                if (reply != null) event.setReply(reply);
+                EntityPlayerMP player = ((NetHandlerPlayServer) event.getHandler()).player;
+                FMLProxyPacket reply = handler.handle(data, player);
+                if (reply != null) {
+                    sendTo(packet, player);
+                    //event.setReply(reply);
+                }
             } catch (Throwable e) {
                 throw new RuntimeException("Exception on serverbound packet of ID #" + Byte.toUnsignedInt(type), e);
             }
